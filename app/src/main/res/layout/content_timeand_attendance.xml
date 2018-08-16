@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/attendance"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".TimeandAttendance"
+    tools:showIn="@layout/app_bar_timeand_attendance">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/top">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="35dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:gravity="center"
+            android:textSize="20dp"
+            android:background="@drawable/view_style"
+            android:id="@+id/nowltextview"/>
+
+        <Button
+            android:layout_alignParentEnd="true"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:id="@+id/bikouopenbutton"
+            android:layout_below="@+id/stbutton"
+            android:text="備考入力"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/attendancetextview"
+        android:layout_below="@+id/top"
+        android:layout_marginTop="3dp">
+
+        <TextView
+            android:id="@+id/syukkinview"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="2dp"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:background="@drawable/view_style"
+            android:text="出勤時刻" />
+
+        <TextView
+            android:id="@+id/taikinview"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="4dp"
+            android:layout_marginLeft="2dp"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:background="@drawable/view_style"
+            android:text="退勤時刻" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below ="@+id/attendancetextview"
+        android:id="@+id/stbutton">
+
+        <Button
+            android:id="@+id/syukkinbutton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_weight="1"
+            android:textColor="@color/colorPrimary"
+            android:text="出勤登録" />
+
+        <Button
+            android:id="@+id/taikinbutton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_weight="1"
+            android:textColor="@color/colorPrimary"
+            android:text="退勤登録" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/stbutton"
+        android:id="@+id/buttonlist"
+        android:layout_marginTop="40dp">
+
+        <Button
+            android:layout_alignParentEnd="true"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:id="@+id/lastmonthbutton"
+            android:layout_below="@+id/stbutton"
+            android:text="前月"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="5"
+            android:layout_height="35dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:gravity="center"
+            android:textSize="25dp"
+            android:background="@drawable/view_style"
+            android:id="@+id/thismonthtextview"/>
+
+        <Button
+            android:layout_alignParentEnd="true"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:id="@+id/nextmonthbutton"
+            android:layout_below="@+id/stbutton"
+            android:text="次月"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textviewlabel"
+        android:layout_marginTop="3dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_below="@+id/buttonlist">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1.5"
+            android:layout_height="wrap_content"
+            android:text="日付"
+            android:id="@+id/datelabelTextView"
+            android:layout_marginRight="2dp"
+            android:textColor="#ffff"
+            android:background="@drawable/label_flame_style"
+            android:gravity="center"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="出勤時刻"
+            android:id="@+id/syukkinlabelTextView"
+            android:layout_below="@+id/idTextView"
+            android:layout_marginRight="2dp"
+            android:textColor="#ffff"
+            android:background="@drawable/label_flame_style"
+            android:gravity="center"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="退勤時刻"
+            android:id="@+id/taikinTextView"
+            android:layout_marginRight="2dp"
+            android:textColor="#ffff"
+            android:background="@drawable/label_flame_style"
+            android:gravity="center"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1.5"
+            android:layout_height="wrap_content"
+            android:text="備考"
+            android:id="@+id/bikouTextView"
+            android:textColor="#ffff"
+            android:background="@drawable/label_flame_style"
+            android:gravity="center"/>
+
+    </LinearLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textviewlabel"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:layout_marginTop="1dp"
+        android:id="@+id/listView">
+
+    </ListView>
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_gravity="bottom"
+        android:background="@color/colorPrimary"
+        app:itemTextColor="@drawable/bottom_navigation_item_state"
+        app:itemIconTint="@drawable/bottom_navigation_item_state"
+        app:menu="@menu/bottom_navigation_item"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>

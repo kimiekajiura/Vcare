@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="16dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp"
+    android:id="@+id/layout_root">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/idlabel"
+        android:layout_alignParentStart="true"
+        android:text="社員ID"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/idedittext"
+        android:layout_below="@+id/idlabel"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="5dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/namelabel"
+        android:layout_below="@+id/idedittext"
+        android:layout_alignParentStart="true"
+        android:text="社員名"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/nameedittext"
+        android:layout_below="@+id/namelabel"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="5dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/grouplabel"
+        android:layout_below="@+id/nameedittext"
+        android:layout_alignParentStart="true"
+        android:text="グループ"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/grouptext"
+        android:layout_below="@+id/grouplabel"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="5dp" />
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/grouptext"
+        android:layout_marginTop="5dp"
+        android:id="@+id/adminch">
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/adminkengen"
+            android:text="管理者権限"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/passlabel"
+        android:layout_below="@+id/adminch"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="5dp"
+        android:text="パスワード"/>
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/passedittext"
+        android:layout_below="@+id/passlabel"
+        android:layout_alignParentStart="true"
+        android:background="@drawable/view_style"
+        android:inputType="textPassword" />
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below ="@+id/passedittext">
+
+        <Button
+            android:id="@+id/createbutton"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/passedittext"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:textColor="@color/colorPrimary"
+            android:text="登録"/>
+
+        <Button
+            android:id="@+id/editbutton"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:textColor="@color/colorPrimary"
+            android:text="修正" />
+
+        <Button
+            android:id="@+id/exbutton"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/passedittext"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:textColor="@color/colorPrimary"
+            android:text="削除" />
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>

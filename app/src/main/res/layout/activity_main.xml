@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:src="@drawable/vivo_03"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"/>
+
+    <TextView
+        android:id="@+id/textview1"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="140dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_centerHorizontal="true"
+        android:background="@color/colorPrimary"
+        android:textColor="#FFFFFF"
+        android:gravity="center"
+        android:text="@string/company" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textview1"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight ="8dp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/syaintextview">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="50dp"
+            android:background="@color/colorPrimary"
+            android:textColor="#FFFFFF"
+            android:gravity="center"
+            android:text="社員"
+            android:id="@+id/syainlabel"/>
+
+        <Spinner
+            android:id="@+id/syaincodespinner"
+            android:layout_marginLeft="2dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="50dp"/>
+
+        <TextView
+            android:id="@+id/syainnametextview"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="50dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginLeft="2dp"
+            android:gravity="center"
+            android:background="@drawable/view_style"
+            android:text="社員名" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/syaintextview"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight ="8dp"
+        android:id="@+id/passwordtextview"
+        android:layout_marginTop="4dp">
+
+        <TextView
+            android:id="@+id/passwordlabel"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="45dp"
+            android:layout_marginRight="2dp"
+            android:background="@color/colorPrimary"
+            android:textColor="#FFFFFF"
+            android:gravity="center"
+            android:layout_alignLeft="@+id/syainlabel"
+            android:text="パスワード"/>
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="50dp"
+            android:layout_marginLeft="2dp"
+            android:gravity="center"
+            android:background="@drawable/view_style"
+            android:inputType="textPassword"
+            android:text=""
+            android:id="@+id/passwordedittext"/>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/loginbutton"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
+        android:textColor="@color/colorPrimary"
+        android:text="Login"
+        android:layout_below="@+id/passwordtextview"/>
+
+
+</RelativeLayout>

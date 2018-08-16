@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_attendance"
+        android:icon="@drawable/baseline_account_circle_black_18dp"
+        android:title="出退勤"/>
+
+    <item
+        android:id="@+id/dayreport"
+        android:icon="@drawable/baseline_create_black_18dp"
+        android:title="日報"/>
+
+    <item
+        android:id="@+id/calendar"
+        android:icon="@drawable/baseline_calendar_today_black_18dp"
+        android:title="カレンダー"/>
+
+    <item
+        android:id="@+id/createsyain"
+        android:icon="@drawable/baseline_face_black_18dp"
+        android:title="社員登録"/>
+
+
+</menu>
