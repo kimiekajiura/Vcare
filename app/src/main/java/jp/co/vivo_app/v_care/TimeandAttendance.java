@@ -311,6 +311,7 @@ public class TimeandAttendance extends AppCompatActivity
                                                                     new ValueEventListener() {
                                                                         @Override
                                                                         public void onDataChange(DataSnapshot dataSnapshot) {
+
                                                                             HashMap map = (HashMap) dataSnapshot.getValue();
 
                                                                             Map<String, String> data = new HashMap<>();
@@ -628,9 +629,7 @@ public class TimeandAttendance extends AppCompatActivity
 
         });
 
-        //mGcalendar = new GregorianCalendar();
-        //mYear =mGcalendar.get(Calendar.YEAR);
-        //mMonth =mGcalendar.get(Calendar.MONTH);
+
         //一覧表示
         mDatabaseReference.child(Const.AttendancePATH).child(mId).child(String.valueOf(mYear)).child(String.valueOf(mMonth)).addChildEventListener(
                 new ChildEventListener() {

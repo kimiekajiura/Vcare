@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,10 +51,6 @@ public class CompactCalendarTab extends Fragment {
         final ListView bookingsListView = mainTabView.findViewById(R.id.bookings_listview);
         final Button showPreviousMonthBut = mainTabView.findViewById(R.id.prev_button);
         final Button showNextMonthBut = mainTabView.findViewById(R.id.next_button);
-        final Button slideCalendarBut = mainTabView.findViewById(R.id.slide_calendar);
-        final Button showCalendarWithAnimationBut = mainTabView.findViewById(R.id.show_with_animation_calendar);
-        final Button setLocaleBut = mainTabView.findViewById(R.id.set_locale);
-        final Button removeAllEventsBut = mainTabView.findViewById(R.id.remove_all_events);
 
         final ArrayAdapter adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, mutableBookings);
         bookingsListView.setAdapter(adapter);
@@ -128,11 +125,6 @@ public class CompactCalendarTab extends Fragment {
             }
         });
 
-        final View.OnClickListener showCalendarOnClickLis = getCalendarShowLis();
-        slideCalendarBut.setOnClickListener(showCalendarOnClickLis);
-
-        final View.OnClickListener exposeCalendarListener = getCalendarExposeLis();
-        showCalendarWithAnimationBut.setOnClickListener(exposeCalendarListener);
 
         compactCalendarView.setAnimationListener(new CompactCalendarView.CompactCalendarAnimationListener() {
             @Override
@@ -141,30 +133,6 @@ public class CompactCalendarTab extends Fragment {
 
             @Override
             public void onClosed() {
-            }
-        });
-
-        setLocaleBut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Locale locale = Locale.FRANCE;
-                dateFormatForDisplaying = new SimpleDateFormat("dd-M-yyyy hh:mm:ss a", locale);
-                TimeZone timeZone = TimeZone.getTimeZone("Europe/Paris");
-                dateFormatForDisplaying.setTimeZone(timeZone);
-                dateFormatForMonth.setTimeZone(timeZone);
-                compactCalendarView.setLocale(timeZone, locale);
-                compactCalendarView.setUseThreeLetterAbbreviation(false);
-                loadEvents();
-                loadEventsForYear(2017);
-                logEventsByMonth(compactCalendarView);
-
-            }
-        });
-
-        removeAllEventsBut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                compactCalendarView.removeAllEvents();
             }
         });
 

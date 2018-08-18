@@ -16,12 +16,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
         <activity
             android:name=".TimeandAttendance"
             android:label="@string/title_activity_timeand_attendance"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".AlertDialogcreate" />
         <activity android:name=".AlertDialogshow" />
+
+        <activity android:name=".CalenderMainActivity"></activity>
+
+
+
     </application>
 
 </manifest>

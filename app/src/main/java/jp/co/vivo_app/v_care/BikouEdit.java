@@ -52,7 +52,7 @@ public class BikouEdit extends DialogFragment {
     private int mCyear;
     private int mCmonth;
     private int mCdate;
-    private  int mChour;
+    private int mChour;
     private int mCminute;
 
     private String mId;

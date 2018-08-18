@@ -1,7 +1,9 @@
 package jp.co.vivo_app.v_care;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.app.ListFragment;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -27,9 +29,15 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import com.github.sundeepk.compactcalendarview.domain.Event;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -37,23 +45,150 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
 public class Calendershow extends DialogFragment{
 
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "CalenderMainActivity";
     private Calendar currentCalender = Calendar.getInstance(Locale.getDefault());
     private SimpleDateFormat dateFormatForDisplaying = new SimpleDateFormat("dd-M-yyyy hh:mm:ss a", Locale.getDefault());
     private SimpleDateFormat dateFormatForMonth = new SimpleDateFormat("MMM - yyyy", Locale.getDefault());
+    private SimpleDateFormat dateFormatMonth = new SimpleDateFormat("MM", Locale.getDefault());
+    private SimpleDateFormat dateFormatYear = new SimpleDateFormat("yyyy", Locale.getDefault());
+    private SimpleDateFormat dateFormatDate = new SimpleDateFormat("dd",Locale.getDefault());
     private boolean shouldShow = false;
     private CompactCalendarView compactCalendarView;
     private ActionBar toolbar;
+    DatabaseReference mDatabaseReference;
+    private DatabaseReference mUserRef;
+
+    private AlertDialog.Builder alert;
+
+    private String mId;
+    private int mYear;
+    private int mMonth;
+    private int mDate;
+
+    private Spinner mYearspinner;
+    private Spinner mMonthspinner;
+    private Spinner mDayspinner;
+    private Spinner mSyaincodespinner;
+    private Spinner mIdSpinner;
+
+    ArrayAdapter<String> yadapter;
+    ArrayAdapter<String> madapter;
+    ArrayAdapter<String> dadapter;
+    ArrayAdapter<String> adapter;
+
+    ArrayList<Syain> mSyainArrayList;
+
+    private DialogFragment dialogFragment;
+    private FragmentManager flagmentManager;
+
+    private int mTargetMonth;
+    private int mTargetYear;
+    private int mTargetDate;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View mainTabView = inflater.inflate(R.layout.main_tab,container,false);
+
+        alert = new AlertDialog.Builder(getActivity());
+        Bundle bundle = getArguments();
+
+        mId = bundle.getString("mId");
+        mYear = bundle.getInt("mYear");
+        mMonth = bundle.getInt("mMonth");
+        mDate = bundle.getInt("mDate");
+
+        mSyaincodespinner = (Spinner) mainTabView.findViewById(R.id.syainchoicespinner);
+        mYearspinner = (Spinner) mainTabView.findViewById(R.id.yearspinner);
+        mMonthspinner = (Spinner) mainTabView.findViewById(R.id.monthspinner);
+
+        //社員spinnaer設定用
+        ChildEventListener mUserListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                HashMap map = (HashMap) dataSnapshot.getValue();
+                String userId = dataSnapshot.getKey();
+
+                boolean adminkengen = (boolean) map.get("adminkengen");
+                String group = (String) map.get("group");
+                String name = (String) map.get("name");
+                String password = (String) map.get("password");
+
+                Syain syain = new Syain(userId,adminkengen,group,name,password);
+                mSyainArrayList.add(syain);
+                adapter.add(mId);
+                adapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+        };
+
+        //年スピナー
+        yadapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item);
+        yadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        Spinner yspinner = (Spinner) mainTabView.findViewById(R.id.yearspinner);
+        yspinner.setAdapter(adapter);
+
+        //月スピナー
+        madapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item);
+        madapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        Spinner mspinner = (Spinner) mainTabView.findViewById(R.id.monthspinner);
+        mspinner.setAdapter(adapter);
+
+        //return;
+        for(int i = mYear - 1; i <= mYear; i++){
+            yadapter.add(String.valueOf(i));
+        }
+        for(int i = 1; i <= 12; i++){
+            madapter.add(String.valueOf(i));
+        }
+
+        //アダプターをセットする
+        yspinner.setAdapter(yadapter);
+        mspinner.setAdapter(madapter);
+
+        //スピナーの初期値を現在の日付にする
+        yspinner.setSelection(1);
+        mspinner.setSelection(mMonth);
+
+        mSyainArrayList = new ArrayList<Syain>();
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference();
+
+        adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        Spinner spinner = (Spinner) mainTabView.findViewById(R.id.syaincodespinner);
+        spinner.setAdapter(adapter);
+
+        mUserRef = mDatabaseReference.child(Const.UserPATH);
+        mUserRef.addChildEventListener(mUserListener);
 
         final List<String> mutableBookings = new ArrayList<>();
 
@@ -61,7 +196,10 @@ public class Calendershow extends DialogFragment{
         final Button showPreviousMonthBut = mainTabView.findViewById(R.id.prev_button);
         final Button showNextMonthBut = mainTabView.findViewById(R.id.next_button);
 
-        final ArrayAdapter adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, mutableBookings);
+        //予定登録画面開く
+        final Button create_button = mainTabView.findViewById(R.id.create_button);
+
+        final ArrayAdapter adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, mutableBookings);
         bookingsListView.setAdapter(adapter);
         compactCalendarView = mainTabView.findViewById(R.id.compactcalendar_view);
 
@@ -75,7 +213,7 @@ public class Calendershow extends DialogFragment{
         compactCalendarView.displayOtherMonthDays(false);
         //compactCalendarView.setIsRtl(true);
         loadEvents();
-        loadEventsForYear(2017);
+        loadEventsForYear(2018);
         compactCalendarView.invalidate();
 
         logEventsByMonth(compactCalendarView);
@@ -102,7 +240,12 @@ public class Calendershow extends DialogFragment{
             public void onDayClick(Date dateClicked) {
                 //toolbar.setTitle(dateFormatForMonth.format(dateClicked));
                 List<Event> bookingsFromMap = compactCalendarView.getEvents(dateClicked);
-                Log.d(TAG, "inside onclick " + dateFormatForDisplaying.format(dateClicked));
+                //月の特定：dateFormatMonth.format(dateClicked)
+                //年の特定：dateFormatYear.format(dateClicked)
+                mTargetMonth=Integer.parseInt(dateFormatMonth.format(dateClicked));
+                mTargetYear=Integer.parseInt(dateFormatYear.format(dateClicked));
+                mTargetDate =Integer.parseInt(dateFormatDate.format(dateClicked));
+
                 if (bookingsFromMap != null) {
                     Log.d(TAG, bookingsFromMap.toString());
                     mutableBookings.clear();
@@ -116,7 +259,7 @@ public class Calendershow extends DialogFragment{
 
             @Override
             public void onMonthScroll(Date firstDayOfNewMonth) {
-                toolbar.setTitle(dateFormatForMonth.format(firstDayOfNewMonth));
+                //toolbar.setTitle(dateFormatForMonth.format(firstDayOfNewMonth));
             }
         });
 
@@ -134,6 +277,25 @@ public class Calendershow extends DialogFragment{
             }
         });
 
+        create_button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                flagmentManager = getFragmentManager();
+                dialogFragment = new CalenderEdit();
+
+                Bundle bundle = new Bundle();
+                bundle.putString("mId",mId);
+                bundle.putInt("mLyear",mTargetYear);
+                bundle.putInt("mLmonth",mTargetMonth);
+                bundle.putInt("mLdate",mTargetDate);
+
+                dialogFragment.setArguments(bundle);
+
+                dialogFragment.show(flagmentManager,"calendaredit");
+                return;
+            }
+        });
+
 
 
         compactCalendarView.setAnimationListener(new CompactCalendarView.CompactCalendarAnimationListener() {
@@ -145,8 +307,6 @@ public class Calendershow extends DialogFragment{
             public void onClosed() {
             }
         });
-
-
 
         // uncomment below to show indicators above small indicator events
         // compactCalendarView.shouldDrawIndicatorsBelowSelectedDays(true);

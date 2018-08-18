@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/choicespinner"
+        android:layout_marginTop="4dp">
+
+        <Spinner
+            android:id="@+id/yearspinner"
+            android:layout_marginLeft="2dp"
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:layout_height="30dp"/>
+
+        <TextView
+            android:id="@+id/yeartextview"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="30dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginLeft="2dp"
+            android:gravity="center"
+            android:text="年" />
+
+        <Spinner
+            android:id="@+id/monthspinner"
+            android:layout_marginLeft="2dp"
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="30dp"/>
+
+        <TextView
+            android:id="@+id/monthtextview"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="30dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginLeft="2dp"
+            android:gravity="center"
+            android:text="月" />
+
+        <Spinner
+            android:id="@+id/dayspinner"
+            android:layout_marginLeft="2dp"
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="30dp"/>
+
+        <TextView
+            android:id="@+id/daytextview"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="30dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginLeft="2dp"
+            android:gravity="center"
+            android:text="日" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:id="@+id/syainchoicespinner"
+        android:layout_below="@+id/choicespinner">
+
+        <Spinner
+            android:id="@+id/syaincodespinner"
+            android:layout_marginLeft="2dp"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="30dp"/>
+
+        <TextView
+            android:id="@+id/syainnametextview"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="30dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginLeft="2dp"
+            android:gravity="center"
+            android:background="@drawable/view_style"
+            android:text="社員名" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/yoteititlelabel"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_below="@+id/syainchoicespinner"
+        android:text="件名"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/titleedittext"
+        android:layout_below="@+id/yoteititlelabel"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginLeft="4dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/detaillabel"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_below="@+id/titleedittext"
+        android:text="詳細"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/yoteiedittext"
+        android:layout_below="@+id/detaillabel"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginLeft="4dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/timelabel"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_below="@+id/yoteiedittext"
+        android:text="時間"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/timespinner"
+        android:layout_below="@+id/timelabel">
+
+        <Spinner
+            android:id="@+id/stimespinner"
+            android:layout_marginLeft="2dp"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="30dp"
+            android:entries="@array/spinnerset"/>
+
+        <TextView
+            android:id="@+id/stimetextview"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="30dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginLeft="2dp"
+            android:gravity="center"
+            android:text="～" />
+
+        <Spinner
+            android:id="@+id/etimespinner"
+            android:layout_marginLeft="2dp"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="30dp"
+            android:entries="@array/spinnerset"/>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/createbutton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/timespinner"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginLeft="4dp"
+        android:textColor="@color/colorPrimary"
+        android:text="登録"
+        android:layout_marginBottom="100dp"/>
+
+</RelativeLayout>
