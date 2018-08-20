@@ -5,10 +5,12 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 
 import com.google.firebase.database.ChildEventListener;
@@ -37,6 +39,7 @@ public class CalenderEdit extends DialogFragment {
     private int mCminute;
 
     private int mYID;
+    private int data;
 
     private AlertDialog.Builder alert;
 
@@ -60,52 +63,12 @@ public class CalenderEdit extends DialogFragment {
     ArrayAdapter<String> adapter;
     private ArrayList<Syain> mSyainArrayList;
     private ArrayList<Calender> mCalenderArrayList;
+
     DatabaseReference mDatabaseReference;
 
     private DatabaseReference mCalenderRef;
-
-    //社員spinnaer設定用
-    ChildEventListener mUserListener = new ChildEventListener() {
-        @Override
-        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-            HashMap map = (HashMap) dataSnapshot.getValue();
-            String userId = dataSnapshot.getKey();
-
-            boolean adminkengen = (boolean) map.get("adminkengen");
-            String group = (String) map.get("group");
-            String name = (String) map.get("name");
-            String password = (String) map.get("password");
-
-            Syain syain = new Syain(userId,adminkengen,group,name,password);
-            mSyainArrayList.add(syain);
-            adapter.add(mId);
-            adapter.notifyDataSetChanged();
-
-        }
-
-        @Override
-        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-        }
-
-        @Override
-        public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-        }
-
-        @Override
-        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-        }
-
-        @Override
-        public void onCancelled(DatabaseError databaseError) {
-
-        }
-
-    };
-
+    private CalenderListAdapter mAdapter;
+    private ListView mListView;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -127,6 +90,48 @@ public class CalenderEdit extends DialogFragment {
         mCdate =cal.get(Calendar.DATE);
         mChour =cal.get(Calendar.HOUR);
         mCminute = cal.get(Calendar.MINUTE);
+
+        //社員spinnaer設定用
+        ChildEventListener mUserListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                HashMap map = (HashMap) dataSnapshot.getValue();
+                String userId = dataSnapshot.getKey();
+
+                boolean adminkengen = (boolean) map.get("adminkengen");
+                String group = (String) map.get("group");
+                String name = (String) map.get("name");
+                String password = (String) map.get("password");
+
+                Syain syain = new Syain(userId,adminkengen,group,name,password);
+                mSyainArrayList.add(syain);
+                adapter.add(mId);
+                adapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+        };
 
         mSyaincodespinner = (Spinner) view.findViewById(R.id.syaincodespinner);
         mYearspinner = (Spinner) view.findViewById(R.id.yearspinner);
@@ -187,89 +192,83 @@ public class CalenderEdit extends DialogFragment {
         mYoteiEditText= (EditText) view.findViewById(R.id.yoteiedittext);
         mKenmeiEditTet = (EditText) view.findViewById(R.id.titleedittext);
 
+
+
         mCreateButton=(Button) view.findViewById(R.id.createbutton);
         mCreateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //mId = (String) mSyaincodespinner.getSelectedItem();
+                mId = mId;
                 mYear = Integer.parseInt(mYearspinner.getSelectedItem().toString());
                 mMonth = Integer.parseInt(mMonthspinner.getSelectedItem().toString());
                 mDate=Integer.parseInt(mDayspinner.getSelectedItem().toString());
 
                 mDatabaseReference=FirebaseDatabase.getInstance().getReference();
                 mCalenderRef=mDatabaseReference.child(Const.CalenderPATH).child(String.valueOf(mYear)).child(String.valueOf(mMonth)).child(String.valueOf(mDate)).child(mId);
+                mCalenderRef.addListenerForSingleValueEvent(
+                        new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                HashMap map = (HashMap) dataSnapshot.getValue();
+                                Map<String,Object> data = new HashMap<>();
+
+                                    String stime = (String) mStimespinner.getSelectedItem();
+                                    String etime = (String) mEtimespinner.getSelectedItem();
+                                    String title = mKenmeiEditTet.getText().toString();
+                                    String detail = mYoteiEditText.getText().toString();
+
+                                    data.put("開始時間",stime);
+                                    data.put("終了時間",etime);
+                                    data.put("タイトル",title);
+                                    data.put("詳細",detail);
+                                    data.put("予定登録時間",mCyear + "/" + mCmonth + "/" + mCdate + "  " + mChour + ":" + mCminute);
+
+                                    Calender calender = new Calender(mYear,mMonth,mDate,stime,etime,title,detail,mId);
+
+                                    mCalenderArrayList= new ArrayList<Calender>();
+                                    mAdapter = new CalenderListAdapter(getActivity());
+                                    View view = getActivity().getLayoutInflater().inflate(R.layout.main_tab, null);
+                                    mListView = (ListView) view.findViewById(R.id.bookings_listview);
+                                    mCalenderRef.push().setValue(data);
+
+                                    mCalenderArrayList.add(calender);
+                                    mAdapter.setCalenderArrayList(mCalenderArrayList);
+
+                                    mListView.setAdapter(mAdapter);
+
+                                    android.app.AlertDialog.Builder alertdialog = new android.app.AlertDialog.Builder(getActivity());
+                                    alertdialog.setTitle("登録しました。");
+                                    alertdialog.setPositiveButton("OK",
+                                            new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    dismiss();
+                                                }
+                                            });
+                                    android.app.AlertDialog alertDialog = alertdialog.create();
+                                    alertDialog.show();
+
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        }
+                );
+
+                /*
                 mCalenderRef.addChildEventListener(
                         new ChildEventListener() {
                             @Override
                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                                    String t = dataSnapshot.getKey();
-                                    if (t != null){
-                                        mYID = mYID + 1;
-                                        HashMap map = (HashMap) dataSnapshot.getValue();
+                                String yid = dataSnapshot.getKey();
 
-                                        if (map == null){
-                                            mYID = 1;
-                                        }else{
-                                            int yid = (int)map.get("YID");
-                                        }
-                                        Map<String,Object> data = new HashMap<>();
-
-                                        String stime = (String) mStimespinner.getSelectedItem();
-                                        String etime = (String) mEtimespinner.getSelectedItem();
-                                        String title = mKenmeiEditTet.getText().toString();
-                                        String detail = mYoteiEditText.getText().toString();
-
-                                        data.put("YID",mYID);
-                                        data.put("開始時間",stime);
-                                        data.put("終了時間",etime);
-                                        data.put("タイトル",title);
-                                        data.put("詳細",detail);
-                                        data.put("予定登録時間",mCyear + "/" + mCmonth + "/" + mCdate + "  " + mChour + ":" + mCminute);
-
-                                        mCalenderRef.setValue(data);
-                                        android.app.AlertDialog.Builder alertdialog = new android.app.AlertDialog.Builder(getActivity());
-                                        alertdialog.setTitle("登録しました。");
-                                        alertdialog.setPositiveButton("OK",
-                                                new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialog, int which) {
-                                                        dismiss();
-                                                    }
-                                                });
-                                        android.app.AlertDialog alertDialog = alertdialog.create();
-                                        alertDialog.show();
-                                    }else{
-                                        mYID = 1;
-                                        mCalenderRef=mDatabaseReference.child(Const.CalenderPATH).child(String.valueOf(mYear)).child(String.valueOf(mMonth)).child(String.valueOf(mDate)).child(mId).child(String.valueOf(mYID));
-
-                                        Map<String,Object> data = new HashMap<>();
-
-                                        String stime = (String) mStimespinner.getSelectedItem();
-                                        String etime = (String) mEtimespinner.getSelectedItem();
-                                        String title = mKenmeiEditTet.getText().toString();
-                                        String detail = mYoteiEditText.getText().toString();
-
-                                        data.put("開始時間",stime);
-                                        data.put("終了時間",etime);
-                                        data.put("タイトル",title);
-                                        data.put("詳細",detail);
-                                        data.put("予定登録時間",mCyear + "/" + mCmonth + "/" + mCdate + "  " + mChour + ":" + mCminute);
-
-                                        mCalenderRef.setValue(data);
-                                        android.app.AlertDialog.Builder alertdialog = new android.app.AlertDialog.Builder(getActivity());
-                                        alertdialog.setTitle("登録しました。");
-                                        alertdialog.setPositiveButton("OK",
-                                                new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialog, int which) {
-                                                        dismiss();
-                                                    }
-                                                });
-                                        android.app.AlertDialog alertDialog = alertdialog.create();
-                                        alertDialog.show();
-                                    }
-                                    mYID = mYID + 1;
-
+                                //int[] values = {Integer.parseInt(yid)};
+                                //for (int index = 1; index < values.length ; index++){
+                                //    mYID = Math.max(max,values[index]) + 1;
+                                //}
                             }
 
                             @Override
@@ -291,65 +290,35 @@ public class CalenderEdit extends DialogFragment {
                             public void onCancelled(DatabaseError databaseError) {
 
                             }
+
                         }
+
                 );
+                if (String.valueOf(mYID) == null){
+                    mYID = 1;
+                    mCalenderRef=mDatabaseReference.child(Const.CalenderPATH).child(String.valueOf(mYear)).child(String.valueOf(mMonth)).child(String.valueOf(mDate)).child(mId).child(String.valueOf(mYID));
+                    Map<String,Object> data = new HashMap<>();
 
-                /*
-                mCalenderRef.addListenerForSingleValueEvent(
-                        new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                HashMap map = (HashMap) dataSnapshot.getValue();
-                                if (map == null){
-                                    mYID = 1;
-                                    Map<String,Object> data = new HashMap<>();
+                    String stime = (String) mStimespinner.getSelectedItem();
+                    String etime = (String) mEtimespinner.getSelectedItem();
+                    String title = mKenmeiEditTet.getText().toString();
+                    String detail = mYoteiEditText.getText().toString();
 
-                                    String stime = (String) mStimespinner.getSelectedItem();
-                                    String etime = (String) mEtimespinner.getSelectedItem();
-                                    String title = mKenmeiEditTet.getText().toString();
-                                    String detail = mYoteiEditText.getText().toString();
+                    data.put("開始時間",stime);
+                    data.put("終了時間",etime);
+                    data.put("タイトル",title);
+                    data.put("詳細",detail);
+                    data.put("予定登録時間",mCyear + "/" + mCmonth + "/" + mCdate + "  " + mChour + ":" + mCminute);
 
-                                    data.put("開始時間",stime);
-                                    data.put("終了時間",etime);
-                                    data.put("タイトル",title);
-                                    data.put("詳細",detail);
-                                    data.put("予定登録時間",mCyear + "/" + mCmonth + "/" + mCdate + "  " + mChour + ":" + mCminute);
+                    mCalenderRef.setValue(data);
+                }else{
 
-                                    mCalenderRef.setValue(data);
-                                    android.app.AlertDialog.Builder alertdialog = new android.app.AlertDialog.Builder(getActivity());
-                                    alertdialog.setTitle("登録しました。");
-                                    alertdialog.setPositiveButton("OK",
-                                            new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int which) {
-                                                    dismiss();
-                                                }
-                                            });
-                                    android.app.AlertDialog alertDialog = alertdialog.create();
-                                    alertDialog.show();
-                                }else{
-
-                                }
-
-                                mYID = 1;
-                                //mCalenderRef=mDatabaseReference.child(Const.CalenderPATH).child(String.valueOf(mYear)).child(String.valueOf(mMonth)).child(String.valueOf(mDate)).child(mId).child(String.valueOf(mYID));
-                                //String yid = dataSnapshot.getKey();
-
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        }
-                );
-                */
+                }
+*/
 
             }
 
         });
-
-
 
         return new android.app.AlertDialog.Builder(getActivity(),R.style.MyAlertDialogTheme)
                 .setView(view)

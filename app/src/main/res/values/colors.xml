@@ -6,4 +6,8 @@
     <color name="colorListView">#EEFFFF</color>
     <color name="black">#000</color>
     <color name="dark_red">#B71C1C</color>
+    <color name="whiteColor">#FFF</color>
+    <color name="blueColor">#00F</color>
+    <color name="redColor">#F00</color>
+
 </resources>

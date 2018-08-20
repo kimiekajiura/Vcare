@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class CalenderListAdapter extends BaseAdapter{
 
-    private LayoutInflater mLayoutInflater;
+    private LayoutInflater mLayoutInflater = null;
     private ArrayList<Calender> mCalenderArrayList;
     private Calender mCalender;
 
@@ -41,14 +41,14 @@ public class CalenderListAdapter extends BaseAdapter{
             convertView = mLayoutInflater.inflate(R.layout.list_calender,parent,false);
         }
 
-        TextView dateText = (TextView) convertView.findViewById(R.id.timetextView);
-        dateText.setText(String.valueOf(String.valueOf(mCalenderArrayList.get(position).getStime()) + "～" +String.valueOf(mCalenderArrayList.get(position).getEtime())));
+        TextView timeText = (TextView) convertView.findViewById(R.id.timetextView);
+        timeText.setText(String.valueOf(String.valueOf(mCalenderArrayList.get(position).getStime()) + "～" +String.valueOf(mCalenderArrayList.get(position).getEtime())));
 
-        TextView stimeText = (TextView) convertView.findViewById(R.id.titletextView);
-        stimeText.setText(mCalenderArrayList.get(position).getTitle());
+        TextView titleText = (TextView) convertView.findViewById(R.id.titletextView);
+        titleText.setText(mCalenderArrayList.get(position).getTitle());
 
-        TextView etimeText = (TextView) convertView.findViewById(R.id.detailtextView);
-        etimeText.setText(mCalenderArrayList.get(position).getDetail());
+        TextView detailext = (TextView) convertView.findViewById(R.id.detailtextView);
+        detailext.setText(mCalenderArrayList.get(position).getDetail());
 
         return convertView;
     }

@@ -20,6 +20,8 @@ public class Const {
 
     public static final String CalenderPATH = "calender";
 
+    public static final String YoteiPATH = "yotei";
+
 
 
 }

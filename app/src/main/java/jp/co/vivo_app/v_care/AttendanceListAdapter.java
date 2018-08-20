@@ -1,5 +1,6 @@
 package jp.co.vivo_app.v_care;
 
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +28,6 @@ public class AttendanceListAdapter extends BaseAdapter {
     @Override
     public Object getItem(int position) {
         return mAttendanceArrayList.get(position);
-
     }
 
     @Override

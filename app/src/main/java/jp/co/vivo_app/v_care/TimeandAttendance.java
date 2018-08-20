@@ -508,7 +508,9 @@ public class TimeandAttendance extends AppCompatActivity
 
                 mThisMonth = mDiff;
                 TextView tv = (TextView)findViewById(R.id.thismonthtextview);
-                tv.setText(mThisYear + "/" + mDiff);
+                tv.setText(mThisYear + "/" + mThisMonth);
+
+
                 mDatabaseReference.child(Const.AttendancePATH).child(mId).child(String.valueOf(mThisYear)).child(String.valueOf(mDiff)).addChildEventListener(
                         new ChildEventListener() {
                             @Override
@@ -579,7 +581,7 @@ public class TimeandAttendance extends AppCompatActivity
 
 
                 TextView tv = (TextView)findViewById(R.id.thismonthtextview);
-                tv.setText(mThisYear + "/" + mDiff);
+                tv.setText(mThisYear + "/" + mThisMonth);
                 mDatabaseReference.child(Const.AttendancePATH).child(mId).child(String.valueOf(mThisYear)).child(String.valueOf(mDiff)).addChildEventListener(
                         new ChildEventListener() {
                             @Override
@@ -720,11 +722,6 @@ public class TimeandAttendance extends AppCompatActivity
 
     }
 
-    @Override
-    protected void onResume(){
-        super.onResume();
-        Log.d("vcare","onResume");
-    }
 
     private void showAlertDialog(int z) {
         if (z == 1){

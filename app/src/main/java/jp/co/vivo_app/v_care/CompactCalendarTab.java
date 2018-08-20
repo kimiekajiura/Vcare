@@ -34,7 +34,7 @@ import java.util.TimeZone;
 
 public class CompactCalendarTab extends Fragment {
 
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "CalenderMainActivity";
     private Calendar currentCalender = Calendar.getInstance(Locale.getDefault());
     private SimpleDateFormat dateFormatForDisplaying = new SimpleDateFormat("dd-M-yyyy hh:mm:ss a", Locale.getDefault());
     private SimpleDateFormat dateFormatForMonth = new SimpleDateFormat("MMM - yyyy", Locale.getDefault());

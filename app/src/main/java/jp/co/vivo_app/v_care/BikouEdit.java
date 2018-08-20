@@ -396,12 +396,6 @@ public class BikouEdit extends DialogFragment {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
                                                     dismiss();
-                                                    //Bundle bundle = new Bundle();
-                                                    //bundle.putString("mId",mId);
-
-                                                    //TimeandAttendance timeandAttendance = new TimeandAttendance();
-                                                    //timeandAttendance.onResume();
-
                                                 }
                                             });
                                     android.app.AlertDialog alertDialog = alertDialogBuilder.create();
