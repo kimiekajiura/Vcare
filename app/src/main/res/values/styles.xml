@@ -24,8 +24,8 @@
     </style>
 
     <style name="MyAlertDialogTheme" parent="Base.Theme.AppCompat.Light.Dialog.Alert">
-        <item name="windowFixedWidthMajor">50%</item>
-        <item name="windowFixedWidthMinor">50%</item>
+        <item name="windowFixedWidthMajor">90%</item>
+        <item name="windowFixedWidthMinor">90%</item>
         <item name="android:textColorPrimary">@color/colorPrimary</item>
     </style>
 

@@ -20,7 +20,7 @@ public class Calender implements Serializable {
 
     private String mId;
 
-    private int mYID;
+    private String mYID;
 
 
     private ArrayList<Calender> mCalenderArrayList;
@@ -49,7 +49,7 @@ public class Calender implements Serializable {
     public String getId() {
         return mId;
     }
-    public int getYid() {
+    public String getYid() {
         return mYID;
     }
 
@@ -78,7 +78,7 @@ public class Calender implements Serializable {
     public void setId(String id){
         mId = id;
     }
-    public void setYid(int yid){
+    public void setYid(String yid){
         mYID = yid;
     }
 
@@ -88,7 +88,7 @@ public class Calender implements Serializable {
         return mCalenderArrayList;
     }
 
-    public Calender (int year,int month,int date,String stime,String etime,String title,String detail,String mid) {
+    public Calender (int year,int month,int date,String stime,String etime,String title,String detail,String mid,String mYID) {
         mYear = year;
         mMonth = month;
         mDate = date;
@@ -97,6 +97,7 @@ public class Calender implements Serializable {
         mTitle = title;
         mDetail = detail;
         mId = mid;
+        this.mYID = mYID;
     }
 }
 

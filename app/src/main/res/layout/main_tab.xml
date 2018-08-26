@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,64 +9,24 @@
     android:id="@+id/main_content"
     tools:context=".Calendershow">
 
-    <LinearLayout
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/choicespinner"
-        android:layout_marginTop="4dp">
-
-        <Spinner
-            android:id="@+id/yearspinner"
-            android:layout_marginLeft="2dp"
-            android:layout_width="0dp"
-            android:layout_weight="1.5"
-            android:layout_height="30dp"/>
-
-        <TextView
-            android:id="@+id/yeartextview"
-            android:layout_width="0dp"
-            android:layout_weight="0.3"
-            android:layout_height="30dp"
-            android:layout_marginRight="1dp"
-            android:layout_marginLeft="2dp"
-            android:gravity="center"
-            android:text="年" />
-
-        <Spinner
-            android:id="@+id/monthspinner"
-            android:layout_marginLeft="2dp"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="30dp"/>
-
-        <TextView
-            android:id="@+id/monthtextview"
-            android:layout_width="0dp"
-            android:layout_weight="0.3"
-            android:layout_height="30dp"
-            android:layout_marginRight="1dp"
-            android:layout_marginLeft="2dp"
-            android:gravity="center"
-            android:text="月" />
-
-        <Button
-
-            android:layout_alignParentEnd="true"
-            android:layout_width="0dp"
-            android:layout_weight="0.5"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimary"
-            android:id="@+id/bikouopenbutton"
-            android:layout_below="@+id/stbutton"
-            android:text="表示"/>
-
-    </LinearLayout>
+        android:layout_height="35dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:gravity="left"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="25dp"
+        android:id="@+id/thismonthtextview"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/smchoice"
-        android:layout_below="@+id/choicespinner">
+        android:layout_below="@+id/thismonthtextview"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="4dp">
 
         <Spinner
             android:id="@+id/syaincodespinner"
@@ -109,7 +71,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/viewbutton"
         android:layout_below="@id/compactcalendar_view"
-        android:layout_marginTop="2dp">
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="4dp">
 
         <Button
             android:id="@+id/prev_button"
@@ -131,51 +94,13 @@
             android:textColor="@color/colorPrimary"/>
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/monthbutton"
-        android:layout_below="@+id/viewbutton"
-        android:layout_marginTop="1dp">
 
-        <Button
-            android:id="@+id/create_button"
-            android:text="新規登録"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/viewbutton"
-            android:layout_alignLeft="@+id/stbutton"
-            android:textColor="@color/colorPrimary" />
-
-        <Button
-            android:id="@+id/edit_button"
-            android:text="修正"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/viewbutton"
-            android:layout_alignLeft="@+id/stbutton"
-            android:textColor="@color/colorPrimary"/>
-
-        <Button
-            android:id="@+id/delete_button"
-            android:text="削除"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/viewbutton"
-            android:layout_alignLeft="@+id/stbutton"
-            android:textColor="@color/colorPrimary"/>
-
-
-    </LinearLayout>
 
     <ListView
-        android:id="@+id/bookings_listview"
+        android:id="@+id/listview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/monthbutton">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/viewbutton">
 
     </ListView>
 

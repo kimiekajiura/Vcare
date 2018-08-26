@@ -21,7 +21,9 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -31,6 +33,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import com.github.sundeepk.compactcalendarview.domain.Event;
@@ -53,7 +56,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
-public class Calendershow extends DialogFragment{
+public class Calendershow extends DialogFragment {
 
     private static final String TAG = "CalenderMainActivity";
     private Calendar currentCalender = Calendar.getInstance(Locale.getDefault());
@@ -104,21 +107,15 @@ public class Calendershow extends DialogFragment{
     private CalenderListAdapter mAdapter;
     private ArrayList<Calender> mCalenderArrayList;
 
+
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        //View mainTabView = getActivity().getLayoutInflater().inflate(R.layout.main_tab, null);
-        View mainTabView = inflater.inflate(R.layout.main_tab,container,false);
+        View mainTabView = getActivity().getLayoutInflater().inflate(R.layout.main_tab, null);
 
-        mListView = (ListView) mainTabView.findViewById(R.id.bookings_listview);
+        mListView = (ListView) mainTabView.findViewById(R.id.listview);
         mAdapter = new CalenderListAdapter(getActivity());
         mCalenderArrayList= new ArrayList<Calender>();
-
-        mEditbutton = (Button) mainTabView.findViewById(R.id.edit_button);
-        mDeletebutton = (Button) mainTabView.findViewById(R.id.delete_button);
-
-        mEditbutton.setVisibility(mainTabView.INVISIBLE);
-        mDeletebutton.setVisibility(mainTabView.INVISIBLE);
 
         alert = new AlertDialog.Builder(getActivity());
         Bundle bundle = getArguments();
@@ -128,9 +125,10 @@ public class Calendershow extends DialogFragment{
         mMonth = bundle.getInt("mMonth");
         mDate = bundle.getInt("mDate");
 
+        TextView tv = (TextView)mainTabView.findViewById(R.id.thismonthtextview);
+        tv.setText(mYear + "/" + mMonth);
+
         mSyaincodespinner = (Spinner) mainTabView.findViewById(R.id.syainchoicespinner);
-        mYearspinner = (Spinner) mainTabView.findViewById(R.id.yearspinner);
-        mMonthspinner = (Spinner) mainTabView.findViewById(R.id.monthspinner);
 
         //社員spinnaer設定用
         ChildEventListener mUserListener = new ChildEventListener() {
@@ -174,35 +172,6 @@ public class Calendershow extends DialogFragment{
 
         };
 
-        //年スピナー
-        yadapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item);
-        yadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        Spinner yspinner = (Spinner) mainTabView.findViewById(R.id.yearspinner);
-        yspinner.setAdapter(yadapter);
-
-        //月スピナー
-        madapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item);
-        madapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        Spinner mspinner = (Spinner) mainTabView.findViewById(R.id.monthspinner);
-        mspinner.setAdapter(madapter);
-
-        //return;
-        for(int i = mYear - 1; i <= mYear; i++){
-            yadapter.add(String.valueOf(i));
-        }
-
-        for(int i = 1; i <= 12; i++){
-            madapter.add(String.valueOf(i));
-        }
-
-        //アダプターをセットする
-        yspinner.setAdapter(yadapter);
-        mspinner.setAdapter(madapter);
-
-        //スピナーの初期値を現在の日付にする
-        yspinner.setSelection(1);
-        mspinner.setSelection(mMonth);
-
         mSyainArrayList = new ArrayList<Syain>();
         mDatabaseReference = FirebaseDatabase.getInstance().getReference();
 
@@ -217,15 +186,13 @@ public class Calendershow extends DialogFragment{
 
         final List<String> mutableBookings = new ArrayList<>();
 
-        final ListView bookingsListView = mainTabView.findViewById(R.id.bookings_listview);
+        final ListView bookingsListView = mainTabView.findViewById(R.id.listview);
         final Button showPreviousMonthBut = mainTabView.findViewById(R.id.prev_button);
         final Button showNextMonthBut = mainTabView.findViewById(R.id.next_button);
 
-        //予定登録画面
-        final Button create_button = mainTabView.findViewById(R.id.create_button);
 
-        //final ArrayAdapter adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, mutableBookings);
-        //bookingsListView.setAdapter(adapter);
+        final ArrayAdapter adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, mutableBookings);
+        bookingsListView.setAdapter(adapter);
         compactCalendarView = mainTabView.findViewById(R.id.compactcalendar_view);
 
         // below allows you to configure color for the current day in the month
@@ -237,11 +204,11 @@ public class Calendershow extends DialogFragment{
         compactCalendarView.setIsRtl(false);
         compactCalendarView.displayOtherMonthDays(false);
         //compactCalendarView.setIsRtl(true);
-        loadEvents();
-        loadEventsForYear(2018);
+        //loadEvents();
+        //loadEventsForYear(2018);
         compactCalendarView.invalidate();
 
-        logEventsByMonth(compactCalendarView);
+        //logEventsByMonth(compactCalendarView);
 
         // below line will display Sunday as the first day of the week
         // compactCalendarView.setShouldShowMondayAsFirstDay(false);
@@ -271,6 +238,21 @@ public class Calendershow extends DialogFragment{
                 mTargetYear=Integer.parseInt(dateFormatYear.format(dateClicked));
                 mTargetDate =Integer.parseInt(dateFormatDate.format(dateClicked));
 
+                flagmentManager = getFragmentManager();
+                dialogFragment = new Calenderview();
+
+                Bundle bundle = new Bundle();
+                bundle.putString("mId",mId);
+                bundle.putInt("mLyear",mTargetYear);
+                bundle.putInt("mLmonth",mTargetMonth);
+                bundle.putInt("mLdate",mTargetDate);
+
+
+                dialogFragment.setArguments(bundle);
+                dialogFragment.show(flagmentManager,"calendarshow");
+                return;
+
+                /*
                 //一覧表示
                 mDatabaseReference=FirebaseDatabase.getInstance().getReference();
                 mCalenderRef=mDatabaseReference.child(Const.CalenderPATH).child(String.valueOf(mTargetYear)).child(String.valueOf(mTargetMonth)).child(String.valueOf(mTargetDate)).child(mId);
@@ -289,7 +271,7 @@ public class Calendershow extends DialogFragment{
 
                                 View view = getActivity().getLayoutInflater().inflate(R.layout.main_tab, null);
 
-                                mListView = (ListView) view.findViewById(R.id.bookings_listview);
+                                mListView = (ListView) view.findViewById(R.id.listview);
                                 mAdapter = new CalenderListAdapter(getActivity());
                                 mCalenderArrayList= new ArrayList<Calender>();
 
@@ -324,6 +306,8 @@ public class Calendershow extends DialogFragment{
                         }
 
                 );
+                */
+
 
                 /*
                 if (bookingsFromMap != null) {
@@ -343,53 +327,29 @@ public class Calendershow extends DialogFragment{
                 //toolbar.setTitle(dateFormatForMonth.format(firstDayOfNewMonth));
 
             }
+
+
         });
 
         showPreviousMonthBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 compactCalendarView.scrollLeft();
-
                 View mainTabView = getActivity().getLayoutInflater().inflate(R.layout.main_tab, null);
-                Spinner ys = (Spinner)mainTabView.findViewById(R.id.yearspinner);
-                Spinner ms = (Spinner)mainTabView.findViewById(R.id.monthspinner);
-
-                //年スピナー
-                yadapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item);
-                yadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                ys.setAdapter(yadapter);
-
-                //月スピナー
-                madapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item);
-                madapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                ms.setAdapter(madapter);
-
-                //return;
-                for(int i = mYear - 1 ; i <= mYear; i++){
-                    yadapter.add(String.valueOf(i));
-                }
-
-                for(int i = 1; i <= 12; i++){
-                    madapter.add(String.valueOf(i));
-                }
-
-
-
                 //前月
                 mDiff = (mMonth) -1;
                 if (mDiff == 0){
-                    //ys.setSelection(-1);
+                    mYear = mYear - 1;
                     mDiff = 12;
                     mMonth = mDiff;
                 }else{
                     mMonth = mDiff;
                 }
 
-                ys.setAdapter(yadapter);
-                ms.setAdapter(madapter);
+                mMonth = mDiff;
+                TextView tv = (TextView)mainTabView.findViewById(R.id.thismonthtextview);
+                tv.setText(mYear + "/" + mMonth);
 
-                ys.setSelection(yadapter.getPosition(String.valueOf(mYear)));
-                ms.setSelection(madapter.getPosition(String.valueOf(mMonth)));
             }
         });
 
@@ -398,7 +358,7 @@ public class Calendershow extends DialogFragment{
             @Override
             public void onClick(View v) {
                 compactCalendarView.scrollRight();
-
+                View mainTabView = getActivity().getLayoutInflater().inflate(R.layout.main_tab, null);
                 //翌月
                 mDiff = (mMonth) + 1;
 
@@ -409,34 +369,13 @@ public class Calendershow extends DialogFragment{
                 }else{
                     mMonth = mDiff;
                 }
-                View mainTabView = getActivity().getLayoutInflater().inflate(R.layout.main_tab, null);
-                Spinner ys = (Spinner)mainTabView.findViewById(R.id.yearspinner);
-                Spinner ms = (Spinner)mainTabView.findViewById(R.id.monthspinner);
 
-                ys.setSelection(mYear);
-                ms.setSelection(mMonth);
+
+                TextView tv = (TextView)mainTabView.findViewById(R.id.thismonthtextview);
+                tv.setText(mYear + "/" + mMonth);
             }
         });
 
-        create_button.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                flagmentManager = getFragmentManager();
-                dialogFragment = new CalenderEdit();
-
-                Bundle bundle = new Bundle();
-                bundle.putString("mId",mId);
-                bundle.putInt("mLyear",mTargetYear);
-                bundle.putInt("mLmonth",mTargetMonth);
-                bundle.putInt("mLdate",mTargetDate);
-
-                dialogFragment.setArguments(bundle);
-                dialogFragment.show(flagmentManager,"calendaredit");
-                return;
-
-
-            }
-        });
 
         compactCalendarView.setAnimationListener(new CompactCalendarView.CompactCalendarAnimationListener() {
             @Override
@@ -455,8 +394,14 @@ public class Calendershow extends DialogFragment{
         //openCalendarOnCreate(v);
 
 
-        return mainTabView;
+        //return mainTabView;
+        return new android.app.AlertDialog.Builder(getActivity(),R.style.MyAlertDialogTheme)
+                .setView(mainTabView)
+                .setTitle("")
+                .show();
     }
+
+
 
     @NonNull
     private View.OnClickListener getCalendarShowLis() {
@@ -516,6 +461,7 @@ public class Calendershow extends DialogFragment{
         // toolbar.setTitle(dateFormatForMonth.format(new Date()));
     }
 
+    /*
     private void loadEvents() {
         addEvents(-1, -1);
         addEvents(Calendar.DECEMBER, -1);
@@ -538,6 +484,7 @@ public class Calendershow extends DialogFragment{
         Log.d(TAG, "Events for Aug with simple date formatter: " + dates);
         Log.d(TAG, "Events for Aug month using default local and timezone: " + compactCalendarView.getEventsForMonth(currentCalender.getTime()));
     }
+
 
     private void addEvents(int month, int year) {
         currentCalender.setTime(new Date());
@@ -563,6 +510,7 @@ public class Calendershow extends DialogFragment{
     }
 
 
+
     private List<Event> getEvents(long timeInMillis, int day) {
         if (day < 2) {
             return Arrays.asList(new Event(Color.argb(255, 169, 68, 65), timeInMillis, "Event at " + new Date(timeInMillis)));
@@ -577,7 +525,7 @@ public class Calendershow extends DialogFragment{
                     new Event(Color.argb(255, 70, 68, 65), timeInMillis, "Event 3 at " + new Date(timeInMillis)));
         }
     }
-
+    */
     private void setToMidnight(Calendar calendar) {
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);

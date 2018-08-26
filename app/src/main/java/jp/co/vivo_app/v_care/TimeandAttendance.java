@@ -79,6 +79,7 @@ public class TimeandAttendance extends AppCompatActivity
     private ListView mListView;
     private TextView mSyukkinTextview;
     private TextView mTaikinTextView;
+    private TextView mTextView;
 
     private DatabaseReference mAttendanceRef;
     private DatabaseReference mAttendanceListRef;
@@ -142,11 +143,10 @@ public class TimeandAttendance extends AppCompatActivity
 
         webView = new WebView(this);
 
-
         Calendar cal = Calendar.getInstance();
 
         mYear =cal.get(Calendar.YEAR);
-        mMonth =cal.get(Calendar.MONTH);
+        mMonth =cal.get(Calendar.MONTH) + 1;
         mDate =cal.get(Calendar.DATE);
         mHour =cal.get(Calendar.HOUR);
         mMinute = cal.get(Calendar.MINUTE);
@@ -227,14 +227,12 @@ public class TimeandAttendance extends AppCompatActivity
         mDatabaseReference = FirebaseDatabase.getInstance().getReference();
         TextView textview = (TextView) findViewById(R.id.syukkinview);
 
+        mYear =cal.get(Calendar.YEAR);
+        mMonth =cal.get(Calendar.MONTH) + 1;
+        mDate =cal.get(Calendar.DATE);
+        mHour =cal.get(Calendar.HOUR);
+        mMinute = cal.get(Calendar.MINUTE);
 
-        mGcalendar = new GregorianCalendar();
-
-        mYear =mGcalendar.get(Calendar.YEAR);
-        mMonth =mGcalendar.get(Calendar.MONTH);
-        mDate =mGcalendar.get(Calendar.DATE);
-        mHour =mGcalendar.get(Calendar.HOUR);
-        mMinute = mGcalendar.get(Calendar.MINUTE);
 
         //出勤ボタンタップ処理
         mSyukkinButton = (Button) findViewById(R.id.syukkinbutton);
@@ -255,11 +253,11 @@ public class TimeandAttendance extends AppCompatActivity
 
                                         (mSyukkinTextview = (TextView) findViewById(R.id.syukkinview)).setText(mYear + "/" + mMonth + "/" + mDate + "  " + mHour + ":" + mMinute);
 
-                                            String stime = mHour + ":" + mMinute;
+                                        String stime = mHour + ":" + mMinute;
 
-                                            data.put("出勤時刻",String.valueOf(mHour) + ":" +String.valueOf(mMinute));
-                                            //data.put("備考",String.valueOf(mBikou));
-                                            mAttendanceRef.setValue(data);
+                                        data.put("出勤時刻",String.valueOf(mHour) + ":" +String.valueOf(mMinute));
+                                        //data.put("備考",String.valueOf(mBikou));
+                                        mAttendanceRef.setValue(data);
 
                                     }
                                 }
@@ -631,6 +629,8 @@ public class TimeandAttendance extends AppCompatActivity
 
         });
 
+        mTextView = (TextView)findViewById(R.id.thismonthtextview);
+        mTextView.setText(mYear + "/" + mMonth);
 
         //一覧表示
         mDatabaseReference.child(Const.AttendancePATH).child(mId).child(String.valueOf(mYear)).child(String.valueOf(mMonth)).addChildEventListener(
@@ -1016,12 +1016,13 @@ public class TimeandAttendance extends AppCompatActivity
     }
 
     private void DateTimeSet(int i) {
+        Calendar cal = Calendar.getInstance();
 
-        mYear =mGcalendar.get(Calendar.YEAR);
-        mMonth =mGcalendar.get(Calendar.MONTH);
-        mDate =mGcalendar.get(Calendar.DATE);
-        mHour =mGcalendar.get(Calendar.HOUR);
-        mMinute = mGcalendar.get(Calendar.MINUTE);
+        mYear =cal.get(Calendar.YEAR);
+        mMonth =cal.get(Calendar.MONTH) + 1;
+        mDate =cal.get(Calendar.DATE);
+        mHour =cal.get(Calendar.HOUR);
+        mMinute = cal.get(Calendar.MINUTE);
     }
 
 

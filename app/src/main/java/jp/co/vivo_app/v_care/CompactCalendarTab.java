@@ -48,7 +48,7 @@ public class CompactCalendarTab extends Fragment {
 
         final List<String> mutableBookings = new ArrayList<>();
 
-        final ListView bookingsListView = mainTabView.findViewById(R.id.bookings_listview);
+        final ListView bookingsListView = mainTabView.findViewById(R.id.listview);
         final Button showPreviousMonthBut = mainTabView.findViewById(R.id.prev_button);
         final Button showNextMonthBut = mainTabView.findViewById(R.id.next_button);
 
