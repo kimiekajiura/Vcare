@@ -57,7 +57,6 @@ public class BikouEdit extends DialogFragment {
 
     private String mId;
 
-    ArrayAdapter<String> adapter;
     private ArrayList<Attendance> mAttendanceArrayList;
     private AttendanceListAdapter mAdapter;
     private ArrayList<Syain> mSyainArrayList;
@@ -65,6 +64,7 @@ public class BikouEdit extends DialogFragment {
     private DatabaseReference mUserRef;
     private DatabaseReference mAttendanceRef;
 
+    ArrayAdapter<String> adapter;
     ArrayAdapter<String> yadapter;
     ArrayAdapter<String> madapter;
     ArrayAdapter<String> dadapter;

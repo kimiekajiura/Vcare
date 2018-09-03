@@ -122,7 +122,6 @@ public class MainActivity extends AppCompatActivity{
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 mIdSpinner = (Spinner) findViewById(R.id.syaincodespinner);
                 String item = (String) mIdSpinner.getSelectedItem();
-
                 mDatabaseReference.child(Const.UserPATH).child(item).addListenerForSingleValueEvent(
                         new ValueEventListener() {
                             @Override
@@ -151,6 +150,13 @@ public class MainActivity extends AppCompatActivity{
 
             }
         });
+
+
+
+
+
+
+
 
         //インスタンスをメンバ変数に保持
         mPasswordEditText = (EditText) findViewById(R.id.passwordedittext);

@@ -198,7 +198,10 @@ public class TimeandAttendance extends AppCompatActivity
 
                         return true;
                     case R.id.dayreport:
+                        Intent intent = new Intent(getApplicationContext(),ChartMain.class);
+                        intent.putExtra("mId",mId);
 
+                        startActivity(intent);
                         return true;
                     case R.id.calendar:
 

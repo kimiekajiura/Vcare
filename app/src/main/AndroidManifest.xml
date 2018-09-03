@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="jp.co.vivo_app.v_care">
 
+    <!-- スリープ中でもブロードキャストを受け取る -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,15 +21,17 @@
         </activity>
 
 
+
         <activity
             android:name=".TimeandAttendance"
             android:label="@string/title_activity_timeand_attendance"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".AlertDialogshow" />
+        <activity android:name=".CalenderMainActivity" />
+        <activity android:name=".ChartMain" />
+        <activity android:name=".DairyReport"></activity>
 
-        <activity android:name=".CalenderMainActivity"></activity>
-
-
+        <receiver android:name=".TaskAlarmReceiver" />
 
     </application>
 

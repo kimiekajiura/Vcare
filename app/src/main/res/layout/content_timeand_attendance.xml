@@ -27,15 +27,6 @@
             android:background="@drawable/view_style"
             android:id="@+id/nowltextview"/>
 
-        <Button
-            android:layout_alignParentEnd="true"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimary"
-            android:id="@+id/bikouopenbutton"
-            android:layout_below="@+id/stbutton"
-            android:text="備考入力"/>
 
     </LinearLayout>
 

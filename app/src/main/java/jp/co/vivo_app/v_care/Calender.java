@@ -22,6 +22,8 @@ public class Calender implements Serializable {
 
     private String mYID;
 
+    private boolean mAlertch;
+
 
     private ArrayList<Calender> mCalenderArrayList;
 
@@ -52,6 +54,9 @@ public class Calender implements Serializable {
     public String getYid() {
         return mYID;
     }
+    public boolean getAlermch(){
+        return mAlertch;
+    }
 
 
     public void setYear(int year){
@@ -81,6 +86,9 @@ public class Calender implements Serializable {
     public void setYid(String yid){
         mYID = yid;
     }
+    public void setAlertch(boolean alertch) {
+        mAlertch = alertch;
+    }
 
 
 
@@ -88,7 +96,7 @@ public class Calender implements Serializable {
         return mCalenderArrayList;
     }
 
-    public Calender (int year,int month,int date,String stime,String etime,String title,String detail,String mid,String mYID) {
+    public Calender (int year,int month,int date,String stime,String etime,String title,String detail,String mid,String mYID,boolean alertch) {
         mYear = year;
         mMonth = month;
         mDate = date;
@@ -98,6 +106,7 @@ public class Calender implements Serializable {
         mDetail = detail;
         mId = mid;
         this.mYID = mYID;
+        mAlertch = alertch;
     }
 }
 

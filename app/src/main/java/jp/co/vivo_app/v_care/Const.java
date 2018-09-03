@@ -22,6 +22,18 @@ public class Const {
 
     public static final String YoteiPATH = "yotei";
 
+    public static final String CustomerPATH = "customer";
+
+    public static final String ProjectPATH = "project";
+
+    public static final String SystemPATH = "system";
+
+    public static final String BunruiPATH = "bunrui";
+
+    public static final String SagyouPATH = "sagyou";
+
+    //日報保存
+    public static final String NippouPath = "nippou";
 
 
 }

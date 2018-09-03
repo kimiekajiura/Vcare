@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        layout="@layout/tool_bar"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/choicespinner"
+        android:layout_marginTop="4dp"
+        android:layout_below="@+id/toolbar">
+
+        <Spinner
+            android:id="@+id/yearspinner"
+            android:layout_marginLeft="2dp"
+            android:layout_width="0dp"
+            android:layout_weight="3.5"
+            android:layout_height="30dp"/>
+
+        <TextView
+            android:id="@+id/yeartextview"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="30dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginLeft="2dp"
+            android:gravity="center"
+            android:text="年" />
+
+        <Spinner
+            android:id="@+id/monthspinner"
+            android:layout_marginLeft="2dp"
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="30dp"/>
+
+        <TextView
+            android:id="@+id/monthtextview"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="30dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginLeft="2dp"
+            android:gravity="center"
+            android:text="月" />
+
+        <Spinner
+            android:id="@+id/dayspinner"
+            android:layout_marginLeft="2dp"
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="30dp"/>
+
+        <TextView
+            android:id="@+id/daytextview"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="30dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginLeft="2dp"
+            android:gravity="center"
+            android:text="日" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:id="@+id/syainchoicespinner"
+        android:layout_below="@+id/choicespinner">
+
+        <Spinner
+            android:id="@+id/syaincodespinner"
+            android:layout_marginLeft="2dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="30dp"/>
+
+        <TextView
+            android:id="@+id/syainnametextview"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="30dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginLeft="2dp"
+            android:gravity="center"
+            android:background="@drawable/view_style"
+            android:text="社員名" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/torihikisaki"
+        android:layout_below="@+id/syainchoicespinner"
+        android:layout_marginTop="4dp">
+
+        <Spinner
+            android:id="@+id/torihikisakispinner"
+            android:layout_marginLeft="2dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="30dp"/>
+
+        <TextView
+            android:id="@+id/torihikisakitextview"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="30dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginLeft="2dp"
+            android:gravity="center"
+            android:background="@drawable/view_style"
+            android:text="取引先名"
+            android:layout_below="@+id/torihikisakispinner"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/torihikisakibusyo"
+        android:layout_below="@+id/torihikisaki"
+        android:layout_marginTop="4dp">
+
+        <Spinner
+            android:id="@+id/torihikisakibusyospinner"
+            android:layout_marginLeft="2dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="30dp"/>
+
+        <TextView
+            android:id="@+id/torihikisakibusyotextview"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="30dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginLeft="2dp"
+            android:gravity="center"
+            android:background="@drawable/view_style"
+            android:text="部署名" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/project"
+        android:layout_below="@+id/torihikisakibusyo"
+        android:layout_marginTop="4dp">
+
+        <Spinner
+            android:id="@+id/projectspinner"
+            android:layout_marginLeft="2dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="30dp"/>
+
+        <TextView
+            android:id="@+id/projecttextview"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="30dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginLeft="2dp"
+            android:gravity="center"
+            android:background="@drawable/view_style"
+            android:text="プロジェクト名"
+            android:layout_below="@+id/torihikisakispinner"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/system"
+        android:layout_below="@+id/project"
+        android:layout_marginTop="4dp">
+
+        <Spinner
+            android:id="@+id/systemspinner"
+            android:layout_marginLeft="2dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="30dp"/>
+
+        <TextView
+            android:id="@+id/systemtextview"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="30dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginLeft="2dp"
+            android:gravity="center"
+            android:background="@drawable/view_style"
+            android:text="システム名"
+            android:layout_below="@+id/torihikisakispinner"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/syuukeibunrui"
+        android:layout_below="@+id/system"
+        android:layout_marginTop="4dp">
+
+        <TextView
+            android:id="@+id/syuukeibunruitextview"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="30dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginLeft="2dp"
+            android:gravity="left"
+            android:text="集計分類"
+            android:layout_below="@+id/torihikisakispinner"/>
+
+        <Spinner
+            android:id="@+id/syuukeibunruispinner"
+            android:layout_marginLeft="2dp"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="30dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/sagyoukubunn"
+        android:layout_below="@+id/syuukeibunrui"
+        android:layout_marginTop="4dp">
+
+        <TextView
+            android:id="@+id/sagyoukubunntextview"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="30dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginLeft="2dp"
+            android:gravity="left"
+            android:text="作業区分"
+            android:layout_below="@+id/torihikisakispinner"/>
+
+        <Spinner
+            android:id="@+id/sagyoukubunnspinner"
+            android:layout_marginLeft="2dp"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="30dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/kousuu"
+        android:layout_below="@+id/sagyoukubunn">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:id="@+id/jissekikousuulabel"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_below="@+id/sagyoukubunn"
+            android:text="実績工数"/>
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:id="@+id/jissekikousuuedittext"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:id="@+id/hosyukousuulabel"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_below="@+id/sagyoukubunn"
+            android:text="保守工数"/>
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:id="@+id/hosyukousuuedittext"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/naiyoulabel"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_below="@+id/kousuu"
+        android:text="内容"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/naiyouedittext"
+        android:layout_below="@+id/naiyoulabel"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginLeft="4dp"/>
+
+    <Button
+        android:id="@+id/createbutton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/naiyouedittext"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginBottom="4dp"
+        android:textColor="@color/colorPrimary"
+        android:text="登録"/>
+
+</RelativeLayout>

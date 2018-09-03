@@ -124,12 +124,20 @@
 
     </LinearLayout>
 
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/alarmch"
+        android:layout_marginTop="4dp"
+        android:layout_below="@+id/timespinner"
+        android:text="通知on"/>
+
     <Button
         android:id="@+id/createbutton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_below="@+id/timespinner"
+        android:layout_below="@+id/alarmch"
         android:layout_marginTop="5dp"
         android:layout_marginRight="4dp"
         android:layout_marginLeft="4dp"

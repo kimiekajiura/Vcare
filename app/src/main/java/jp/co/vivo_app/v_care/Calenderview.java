@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -61,6 +62,8 @@ public class Calenderview extends DialogFragment {
     private String mLetime;
     private String mLtitle;
     private String mLdetail;
+    private boolean mLalertch;
+    private boolean mAlertch;
 
     private ArrayList<Attendance> mAttendanceArrayList;
 
@@ -76,6 +79,7 @@ public class Calenderview extends DialogFragment {
         mYear = bundle.getInt("mLyear");
         mMonth = bundle.getInt("mLmonth");
         mDate = bundle.getInt("mLdate");
+        mAlertch = bundle.getBoolean("mAlertch");
 
         mToolbar = (android.support.v7.widget.Toolbar) mainTabView.findViewById(R.id.toolbar);
         mToolbar.setTitle(mYear + "/" + mMonth + "/" + mDate );
@@ -106,8 +110,9 @@ public class Calenderview extends DialogFragment {
                         String title = (String) map.get("タイトル");
                         String detail = (String) map.get("詳細");
                         String calenderid = (dataSnapshot.getKey());
+                        boolean alertch = (boolean)map.get("通知on");
 
-                        Calender calender = new Calender(mYear,mMonth,mDate,stime,etime,title,detail,mId,calenderid);
+                        Calender calender = new Calender(mYear,mMonth,mDate,stime,etime,title,detail,mId,calenderid,alertch);
 
                         mCalenderArrayList.add(calender);
 
@@ -133,6 +138,7 @@ public class Calenderview extends DialogFragment {
                                 String title = (String) map.get("タイトル");
                                 String detail = (String) map.get("詳細");
                                 String calenderid = (dataSnapshot.getKey());
+                                boolean alertch = (boolean) map.get("通知on");
 
                                 calender.setYear(mYear);
                                 calender.setMonth(mMonth);
@@ -142,6 +148,7 @@ public class Calenderview extends DialogFragment {
                                 calender.setTitle(title);
                                 calender.setDetail(detail);
                                 calender.setYid(calenderid);
+                                calender.setAlertch(alertch);
                                 mAdapter.notifyDataSetChanged();
                             }
                         }
@@ -150,56 +157,24 @@ public class Calenderview extends DialogFragment {
 
                     @Override
                     public void onChildRemoved(DataSnapshot dataSnapshot) {
-                        mCalenderArrayList.clear();
-                        mDatabaseReference= FirebaseDatabase.getInstance().getReference();
-                        mDatabaseReference.child(Const.CalenderPATH).child(mId).child(String.valueOf(mYear)).child(String.valueOf(mMonth)).child(String.valueOf(mDate)).addChildEventListener(
-                                new ChildEventListener() {
-                                    @Override
-                                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                                        HashMap map = (HashMap) dataSnapshot.getValue();
-                                        Map<String,Object> data = new HashMap<>();
 
+                        HashMap map = (HashMap) dataSnapshot.getValue();
+                        Map<String,Object> data = new HashMap<>();
 
-                                        String stime = (String) map.get("開始時間");
-                                        String etime = (String) map.get("終了時間");
-                                        String title = (String) map.get("タイトル");
-                                        String detail = (String) map.get("詳細");
-                                        String calenderid = (dataSnapshot.getKey());
+                        for (Calender calender : mCalenderArrayList){
+                            if (String.valueOf(dataSnapshot.getKey()).equals(String.valueOf(calender.getYid()))) {
+                                mCalenderArrayList.remove(calender);
+                                mAdapter.notifyDataSetChanged();
+                                break;
+                            }
+                        }
 
-                                        Calender calender = new Calender(mYear,mMonth,mDate,stime,etime,title,detail,mId,calenderid);
-                                        mCalenderArrayList.add(calender);
-
-                                        mAdapter.setCalenderArrayList(mCalenderArrayList);
-                                        if (mListView == null){
-                                            View newDialog = getActivity().getLayoutInflater().inflate(R.layout.calender_view, null);
-                                            mListView = (ListView) newDialog.findViewById(R.id.listview);
-                                        }
-                                        mListView.setAdapter(mAdapter);
-                                        mAdapter.notifyDataSetChanged();
-                                    }
-
-                                    @Override
-                                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                                    }
-
-                                    @Override
-                                    public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                                    }
-
-                                    @Override
-                                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                                    }
-
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {
-
-                                    }
-                                }
-                        );
-
+//                        if (mListView == null){
+//                            View newDialog = getActivity().getLayoutInflater().inflate(R.layout.calender_view, null);
+//                            mListView = (ListView) newDialog.findViewById(R.id.listview);
+//                        }
+//
+//                        mAdapter.notifyDataSetChanged();
                     }
 
                     @Override
@@ -231,6 +206,7 @@ public class Calenderview extends DialogFragment {
                 mLetime =mCalenderArrayList.get(position).getEtime();
                 mLtitle =mCalenderArrayList.get(position).getTitle();
                 mLdetail =mCalenderArrayList.get(position).getDetail();
+                mLalertch =mCalenderArrayList.get(position).getAlermch();
 
                 Bundle bundle = new Bundle();
 
@@ -243,6 +219,7 @@ public class Calenderview extends DialogFragment {
                 bundle.putString("mLtitle",mLtitle);
                 bundle.putString("mLdetail",mLdetail);
                 bundle.putString("mYID",mCalenderArrayList.get(position).getYid());
+                bundle.putBoolean("mAlertch",mLalertch);
 
                 dialogFragment.setArguments(bundle);
                 dialogFragment.show(flagmentManager,"calender");

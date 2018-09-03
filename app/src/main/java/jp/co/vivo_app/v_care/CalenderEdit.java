@@ -1,19 +1,28 @@
 package jp.co.vivo_app.v_care;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.FragmentManager;
+import android.app.PendingIntent;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -22,10 +31,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
+
+import static android.content.Context.ALARM_SERVICE;
 
 public class CalenderEdit extends DialogFragment {
 
@@ -37,6 +52,16 @@ public class CalenderEdit extends DialogFragment {
     private String mEtime;
     private String mTitle;
     private String mDetail;
+    private String mYTdate;
+
+    private Date mSDdate;
+
+    private int mSYear;
+    private int mMonthofyear;
+    private int mDayOfMonth;
+
+    private Date mstime;
+    private Date metime;
 
     private int mCyear;
     private int mCmonth;
@@ -69,6 +94,8 @@ public class CalenderEdit extends DialogFragment {
     private Button mCreateButton;
     private Button mDeleteButton;
 
+    private CheckBox mAlermCh;
+
     ArrayAdapter<String> adapter;
     private ArrayList<Syain> mSyainArrayList;
     private ArrayList<Calender> mCalenderArrayList;
@@ -80,6 +107,18 @@ public class CalenderEdit extends DialogFragment {
     private ListView mListView;
 
     private int mAEFlg;
+
+    private String mHourOfDay;
+    private String mMinuteDay;
+    private Date mSdate;
+
+    private boolean mAlertch;
+    private String mEcdate;
+
+    private DialogFragment dialogFragment;
+    private FragmentManager flagmentManager;
+
+    private int mCYear, mCMonth, mCDay, mCHour, mCMinute;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -109,6 +148,8 @@ public class CalenderEdit extends DialogFragment {
         mCreateButton = (Button) newDialog.findViewById(R.id.createbutton);
         mDeleteButton = (Button) newDialog.findViewById(R.id.deletebutton);
 
+        mAlermCh = (CheckBox) newDialog.findViewById(R.id.alarmch);
+
         Calendar cal = Calendar.getInstance();
         mCyear =cal.get(Calendar.YEAR);
         mCmonth =cal.get(Calendar.MONTH);
@@ -127,6 +168,7 @@ public class CalenderEdit extends DialogFragment {
         mTitle = bundle.getString("mLtitle");
         mDetail = bundle.getString("mLdetail");
         mYID = bundle.getString("mYID");
+        mAlertch = bundle.getBoolean("mAlertch");
 
         //新規登録
         if (mYID == null){
@@ -146,6 +188,9 @@ public class CalenderEdit extends DialogFragment {
 
             mYoteiEditText = (EditText) newDialog.findViewById(R.id.yoteiedittext);
             mYoteiEditText.setText(mDetail);
+
+            mAlermCh = (CheckBox) newDialog.findViewById(R.id.alarmch);
+            mAlermCh.setChecked(mAlertch);
         }
 
         mToolbar = (android.support.v7.widget.Toolbar) newDialog.findViewById(R.id.toolbar);
@@ -194,6 +239,54 @@ public class CalenderEdit extends DialogFragment {
 
         };
 
+
+        //チェックボックス
+        mAlermCh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CheckBox checkBox = (CheckBox) v;
+                boolean checked = checkBox.isChecked();
+                if (checked == false){
+                    //checkBox.setChecked(false);
+                }else{
+                    checkBox.setChecked(true);
+                    android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(getActivity());
+                    alertDialogBuilder.setTitle("通知日を登録してください。");
+                    alertDialogBuilder.setPositiveButton("OK",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    DatePickerDialog dataPickerDialog = new DatePickerDialog(getActivity(),
+                                            new DatePickerDialog.OnDateSetListener() {
+                                                @Override
+                                                public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                                                    mSYear = year;
+                                                    mMonthofyear = month;
+                                                    mDayOfMonth = dayOfMonth;
+
+                                                    try{
+                                                        mEcdate = mSYear + "/" + mMonthofyear + "/" + mDayOfMonth;
+
+                                                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+                                                        mSDdate = sdf.parse(mEcdate);
+
+                                                    }catch (ParseException e){
+
+                                                    }
+
+                                                }
+                                            },mCyear,mCmonth,mCdate);
+                                    dataPickerDialog.show();
+                                }
+                            });
+                    android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
+                    return;
+
+                }
+            }
+        });
+
         mCreateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -201,22 +294,67 @@ public class CalenderEdit extends DialogFragment {
                 if (mAEFlg == 1){
                     mId = mId;
                     mDatabaseReference=FirebaseDatabase.getInstance().getReference();
+                    //mCalenderRef=mDatabaseReference.child(Const.CalenderPATH).child(mId).child(String.valueOf(mYear)).child(String.valueOf(mMonth)).child(String.valueOf(mDate));
                     mCalenderRef=mDatabaseReference.child(Const.CalenderPATH).child(mId).child(String.valueOf(mYear)).child(String.valueOf(mMonth)).child(String.valueOf(mDate));
-                    //HashMap map = (HashMap) dataSnapshot.getValue();
-                    Map<String,Object> data = new HashMap<>();
+                    mCalenderRef.addListenerForSingleValueEvent(
+                            new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    HashMap map = (HashMap) dataSnapshot.getValue();
+                                    Map<String,Object> data = new HashMap<>();
 
-                    String stime = (String) mStimespinner.getSelectedItem();
-                    String etime = (String) mEtimespinner.getSelectedItem();
-                    String title = mTitleEditText.getText().toString();
-                    String detail = mYoteiEditText.getText().toString();
+                                    String stime = (String) mStimespinner.getSelectedItem();
+                                    String etime = (String) mEtimespinner.getSelectedItem();
+                                    String title = mTitleEditText.getText().toString();
+                                    String detail = mYoteiEditText.getText().toString();
+                                    boolean alermch = mAlermCh.isChecked();
 
-                    data.put("開始時間",stime);
-                    data.put("終了時間",etime);
-                    data.put("タイトル",title);
-                    data.put("詳細",detail);
-                    data.put("予定登録時間",mCyear + "/" + mCmonth + "/" + mCdate + "  " + mChour + ":" + mCminute);
+                                    data.put("開始時間",stime);
+                                    data.put("終了時間",etime);
+                                    data.put("タイトル",title);
+                                    data.put("詳細",detail);
+                                    data.put("予定登録時間",mCyear + "/" + mCmonth + "/" + mCdate + "  " + mChour + ":" + mCminute);
+                                    data.put("通知時刻",mEcdate);
+                                    data.put("通知on",alermch);
+                                    String key= mCalenderRef.push().getKey();
 
-                    mCalenderRef.push().setValue(data);
+                                    //アラーム準備
+                                    mCalenderRef=mDatabaseReference.child(Const.CalenderPATH).child(mId).child(String.valueOf(mYear)).child(String.valueOf(mMonth)).child(String.valueOf(mDate)).child(key);
+                                    mCalenderRef.setValue(data);
+
+                                    if (alermch == true) {
+
+                                        GregorianCalendar calendar = new GregorianCalendar(mCYear,mCMonth - 1,mCDay,mCHour,mCMinute);
+                                        calendar.setTimeInMillis(0);
+                                        calendar.set(mSYear,mMonthofyear,mDayOfMonth,0,0,0);
+
+                                        Intent resultIntent  = new Intent(getActivity(),TaskAlarmReceiver.class);
+                                        resultIntent.putExtra("alarm",key);
+                                        resultIntent.putExtra("year",mYear);
+                                        resultIntent.putExtra("month",mMonth);
+                                        resultIntent.putExtra("date",mDate);
+                                        resultIntent.putExtra("id",mId);
+                                        resultIntent.putExtra("title",title);
+                                        resultIntent.putExtra("detail",detail);
+
+                                        PendingIntent resultPendingIntent = PendingIntent.getBroadcast(
+                                                getActivity(),
+                                                1,
+                                                resultIntent ,
+                                                PendingIntent.FLAG_UPDATE_CURRENT
+                                        );
+                                        AlarmManager alarmManager = (AlarmManager)getActivity().getSystemService(ALARM_SERVICE);
+                                        alarmManager.set(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(), resultPendingIntent);
+
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            }
+                    );
 
                     android.app.AlertDialog.Builder alertdialog = new android.app.AlertDialog.Builder(getActivity());
                     alertdialog.setTitle("登録しました。");
@@ -236,6 +374,7 @@ public class CalenderEdit extends DialogFragment {
                     String etime = (String) mEtimespinner.getSelectedItem();
                     String title = mTitleEditText.getText().toString();
                     String detail = mYoteiEditText.getText().toString();
+                    boolean alermch = mAlermCh.isChecked();
                     mId = mId;
 
                     mDatabaseReference=FirebaseDatabase.getInstance().getReference();
@@ -248,8 +387,36 @@ public class CalenderEdit extends DialogFragment {
                     data.put("タイトル",title);
                     data.put("詳細",detail);
                     data.put("予定登録時間",mCyear + "/" + mCmonth + "/" + mCdate + "  " + mChour + ":" + mCminute);
-
+                    data.put("通知on",alermch);
                     mCalenderRef.setValue(data);
+
+
+                    if (alermch == true) {
+
+                        GregorianCalendar calendar = new GregorianCalendar(mCYear,mCMonth - 1,mCDay,mCHour,mCMinute);
+                        calendar.setTimeInMillis(0);
+                        calendar.set(mSYear,mMonthofyear,mDayOfMonth,0,0,0);
+
+                        Intent resultIntent  = new Intent(getActivity(),TaskAlarmReceiver.class);
+                        resultIntent.putExtra("alarm",mYID);
+                        resultIntent.putExtra("year",mYear);
+                        resultIntent.putExtra("month",mMonth);
+                        resultIntent.putExtra("date",mDate);
+                        resultIntent.putExtra("id",mId);
+                        resultIntent.putExtra("title",title);
+                        resultIntent.putExtra("detail",detail);
+
+                        PendingIntent resultPendingIntent = PendingIntent.getBroadcast(
+                                getActivity(),
+                                1,
+                                resultIntent ,
+                                PendingIntent.FLAG_UPDATE_CURRENT
+                        );
+                        AlarmManager alarmManager = (AlarmManager)getActivity().getSystemService(ALARM_SERVICE);
+                        alarmManager.set(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(), resultPendingIntent);
+
+                    }
+
 
                     android.app.AlertDialog.Builder alertdialog = new android.app.AlertDialog.Builder(getActivity());
                     alertdialog.setTitle("修正しました。");
@@ -263,11 +430,11 @@ public class CalenderEdit extends DialogFragment {
                     android.app.AlertDialog alertDialog = alertdialog.create();
                     alertDialog.show();
 
-
-
                 }
 
+
             }
+
 
         });
 
@@ -284,7 +451,6 @@ public class CalenderEdit extends DialogFragment {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                mCalenderRef.removeValue();
 
                                 android.app.AlertDialog.Builder alertdialog = new android.app.AlertDialog.Builder(getActivity());
                                 alertdialog.setTitle("削除しました。");
@@ -293,6 +459,50 @@ public class CalenderEdit extends DialogFragment {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 dialog.cancel();
+
+                                                mDatabaseReference=FirebaseDatabase.getInstance().getReference();
+                                                mCalenderRef=mDatabaseReference.child(Const.CalenderPATH).child(mId).child(String.valueOf(mYear)).child(String.valueOf(mMonth)).child(String.valueOf(mDate)).child(mYID);
+                                                mCalenderRef.addListenerForSingleValueEvent(
+                                                        new ValueEventListener() {
+                                                            @Override
+                                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                                HashMap map = (HashMap) dataSnapshot.getValue();
+                                                                Map<String,Object> data = new HashMap<>();
+
+                                                                String title = (String) map.get("title");
+                                                                String detail = (String) map.get("detail");
+
+                                                                //タスク削除
+                                                                Intent resultIntent  = new Intent(getActivity(),TaskAlarmReceiver.class);
+                                                                resultIntent.putExtra("alarm",mYID);
+                                                                resultIntent.putExtra("year",mYear);
+                                                                resultIntent.putExtra("month",mMonth);
+                                                                resultIntent.putExtra("date",mDate);
+                                                                resultIntent.putExtra("id",mId);
+                                                                resultIntent.putExtra("title",title);
+                                                                resultIntent.putExtra("detail",detail);
+                                                                PendingIntent resultPendingIntent = PendingIntent.getBroadcast(
+                                                                        getActivity(),
+                                                                        1,
+                                                                        resultIntent,
+                                                                        PendingIntent.FLAG_UPDATE_CURRENT
+                                                                );
+
+                                                                AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
+                                                                alarmManager.cancel(resultPendingIntent);
+
+                                                                mCalenderRef.removeValue();
+                                                            }
+
+                                                            @Override
+                                                            public void onCancelled(DatabaseError databaseError) {
+
+                                                            }
+                                                        }
+                                                );
+
+
+
                                             }
                                         });
                                 android.app.AlertDialog alertDialog = alertdialog.create();
@@ -309,4 +519,5 @@ public class CalenderEdit extends DialogFragment {
                 .show();
 
     }
+
 }
