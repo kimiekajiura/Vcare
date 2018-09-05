@@ -4,6 +4,8 @@
 
     <!-- スリープ中でもブロードキャストを受け取る -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!--システム起動時にアプリ起動-->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="true"
@@ -29,9 +31,16 @@
         <activity android:name=".AlertDialogshow" />
         <activity android:name=".CalenderMainActivity" />
         <activity android:name=".ChartMain" />
-        <activity android:name=".DairyReport"></activity>
+        <activity android:name=".DairyReport">
 
-        <receiver android:name=".TaskAlarmReceiver" />
+        </activity>
+
+        <receiver android:name=".TaskAlarmReceiver" >
+        <intent-filter>
+            <action android:name="android.intent.action.BOOT_COMPLETED" />
+            <category android:name="android.intent.category.DEFAULT" />
+        </intent-filter>
+    </receiver>
 
     </application>
 

@@ -56,12 +56,9 @@ public class CalenderEdit extends DialogFragment {
 
     private Date mSDdate;
 
-    private int mSYear;
-    private int mMonthofyear;
-    private int mDayOfMonth;
+    private int mSYear,mMonthofyear,mDayOfMonth;
 
-    private Date mstime;
-    private Date metime;
+    private Date mstime,metime;
 
     private int mCyear;
     private int mCmonth;
@@ -337,6 +334,7 @@ public class CalenderEdit extends DialogFragment {
                                         resultIntent.putExtra("title",title);
                                         resultIntent.putExtra("detail",detail);
 
+                                        resultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                         PendingIntent resultPendingIntent = PendingIntent.getBroadcast(
                                                 getActivity(),
                                                 1,

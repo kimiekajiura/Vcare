@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -52,8 +53,12 @@ public class ChartMain extends AppCompatActivity {
     private int mCminute;
 
     private String mId;
-    private String mLabel;
+    private int mLabel;
     private String mLdate;
+
+    private int mlabel;
+
+    private int mHosyukousuu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,9 +106,7 @@ public class ChartMain extends AppCompatActivity {
         right.setDrawZeroLine(true);
         right.setDrawTopYLabelEntry(true);
 
-        //X軸
-        XAxis xAxis = chart.getXAxis();
-        //X軸に表示するLabelのリスト(最初の""は原点の位置)
+
 
         Calendar cal = Calendar.getInstance();
 
@@ -113,49 +116,92 @@ public class ChartMain extends AppCompatActivity {
         mChour =cal.get(Calendar.HOUR);
         mCminute = cal.get(Calendar.MINUTE);
 
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference();
-        mDatabaseReference.child(Const.NippouPath).child(mId).child(String.valueOf(mCyear)).child(String.valueOf(mCmonth)).addChildEventListener(
-                new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        HashMap map = (HashMap) dataSnapshot.getValue();
+        cal.set(Calendar.YEAR, mCyear);
+        cal.set(Calendar.MONTH, mCmonth);
+        int lastDayOfMonth = cal.getActualMaximum(Calendar.DATE);
 
-                        mLdate = dataSnapshot.getKey();
-                        mLabel = mCyear + "/" + mCmonth + "/" + mLdate;
+        //for(int i = 1; i <= lastDayOfMonth; i++) {
+        //    mlabel[i - 1] = i ;
 
-                    }
-
-                    @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                }
-        );
+            //X軸
+            XAxis xAxis = chart.getXAxis();
+            //X軸に表示するLabelのリスト(最初の""は原点の位置)
+            final String[] labels = {"","18/8/1", "18/8/2", "18/8/3","18/8/4", "18/8/5", "18/8/6","18/8/7", "18/8/8", "18/8/9","18/8/10", "18/8/11", "18/8/12","18/8/13", "18/8/14", "18/8/15","18/8/16", "18/8/17", "18/8/18","18/8/19","18/8/20", "18/8/21", "18/8/22","18/8/23", "18/8/24", "18/8/25","18/8/26", "18/8/27", "18/8/28","18/8/29", "18/8/30", "18/8/31"};
+            //final String[] labels = {"", String.valueOf(mLabel)};
+            xAxis.setValueFormatter(new IndexAxisValueFormatter(labels));
+            XAxis bottomAxis = chart.getXAxis();
+            bottomAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+            bottomAxis.setDrawLabels(true);
+            bottomAxis.setDrawGridLines(false);
+            bottomAxis.setDrawAxisLine(true);
+        //}
 
 
-        final String[] labels = {"","18/8/1", "18/8/2", "18/8/3","18/8/4", "18/8/5", "18/8/6","18/8/7", "18/8/8", "18/8/9","18/8/10", "18/8/11", "18/8/12","18/8/13", "18/8/14", "18/8/15","18/8/16", "18/8/17", "18/8/18","18/8/19","18/8/20", "18/8/21", "18/8/22","18/8/23", "18/8/24", "18/8/25","18/8/26", "18/8/27", "18/8/28","18/8/29", "18/8/30", "18/8/31"};
-        //final String[] labels = {"",mLabel};
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(labels));
-        XAxis bottomAxis = chart.getXAxis();
-        bottomAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        bottomAxis.setDrawLabels(true);
-        bottomAxis.setDrawGridLines(false);
-        bottomAxis.setDrawAxisLine(true);
+//        mHosyukousuu = 0;
+//        mDatabaseReference= FirebaseDatabase.getInstance().getReference();
+//        mDatabaseReference.child(Const.NippouPath).child(mId).child(String.valueOf(mCyear)).child(String.valueOf(mCmonth)).addChildEventListener(
+//                new ChildEventListener() {
+//                    @Override
+//                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//                        Calendar cal = Calendar.getInstance();
+//
+//                        mCyear =cal.get(Calendar.YEAR);
+//                        mCmonth =cal.get(Calendar.MONTH) + 1;
+//                        mCdate =cal.get(Calendar.DATE);
+//                        mChour =cal.get(Calendar.HOUR);
+//                        mCminute = cal.get(Calendar.MINUTE);
+//
+//                        cal.set(Calendar.YEAR, mCyear);
+//                        cal.set(Calendar.MONTH, mCmonth);
+//                        int lastDayOfMonth = cal.getActualMaximum(Calendar.DATE);
+//
+//                        for(int i = 1; i <= lastDayOfMonth; i++) {
+//                            mlabel[ i - 1] = i;
+//
+//                            HashMap map = (HashMap) dataSnapshot.getValue();
+//                            mLdate = dataSnapshot.getKey();
+//
+//                            //データがある
+////                            if (String.valueOf(i).equals(mLdate)) {
+////                                String hkousuu = (String) map.get("Hosyukousuu");
+////                                if (hkousuu.equals(0)) {
+////
+////                                } else {
+////                                    //mHosyukousuu = hkousuu + 1;
+////                                }
+////                            //データ無し
+////                            } else {
+////
+////                            }
+//
+//                        }
+//                        Log.d("vcare",mlabel);
+//
+//                    }
+//
+//                    @Override
+//                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(DatabaseError databaseError) {
+//
+//                    }
+//                }
+//        );
+
+
 
         //グラフ上の表示
         chart.setDrawValueAboveBar(true);
