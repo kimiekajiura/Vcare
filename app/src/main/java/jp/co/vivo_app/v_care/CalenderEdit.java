@@ -321,10 +321,16 @@ public class CalenderEdit extends DialogFragment {
 
                                     if (alermch == true) {
 
-                                        GregorianCalendar calendar = new GregorianCalendar(mCYear,mCMonth - 1,mCDay,mCHour,mCMinute);
-                                        calendar.setTimeInMillis(0);
-                                        calendar.set(mSYear,mMonthofyear,mDayOfMonth,0,0,0);
+//                                        Calendar cal = Calendar.getInstance();
+//                                        mCyear =cal.get(Calendar.YEAR);
+//                                        mCmonth =cal.get(Calendar.MONTH);
+//                                        mCdate =cal.get(Calendar.DATE);
+//                                        mChour =cal.get(Calendar.HOUR);
+//                                        mCminute = cal.get(Calendar.MINUTE);
 
+                                        GregorianCalendar cal = new GregorianCalendar(mCYear,mCMonth - 1,mCDay,mCHour,mCMinute);
+                                        cal.setTimeInMillis(0);
+                                        cal.set(mSYear,mMonthofyear,mDayOfMonth,0,0,0);
                                         Intent resultIntent  = new Intent(getActivity(),TaskAlarmReceiver.class);
                                         resultIntent.putExtra("alarm",key);
                                         resultIntent.putExtra("year",mYear);
@@ -342,7 +348,7 @@ public class CalenderEdit extends DialogFragment {
                                                 PendingIntent.FLAG_UPDATE_CURRENT
                                         );
                                         AlarmManager alarmManager = (AlarmManager)getActivity().getSystemService(ALARM_SERVICE);
-                                        alarmManager.set(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(), resultPendingIntent);
+                                        alarmManager.set(AlarmManager.RTC_WAKEUP,cal.getTimeInMillis(), resultPendingIntent);
 
                                     }
                                 }

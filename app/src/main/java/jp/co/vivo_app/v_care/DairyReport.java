@@ -727,6 +727,9 @@ public class DairyReport extends AppCompatActivity {
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mYear = Integer.parseInt(mYearspinner.getSelectedItem().toString());
+                mMonth = Integer.parseInt(mMonthspinner.getSelectedItem().toString());
+                mDate=Integer.parseInt(mDayspinner.getSelectedItem().toString());
                 mIdSpinner = (Spinner) findViewById(R.id.syaincodespinner);
                 String item = (String) mIdSpinner.getSelectedItem();
                 mDatabaseReference = FirebaseDatabase.getInstance().getReference();
@@ -746,8 +749,8 @@ public class DairyReport extends AppCompatActivity {
 
                 mSbunrui = mSyuukeibunrui.getSelectedItem().toString();
                 mSagyou = mSagyoukubunn.getSelectedItem().toString();
-                //mHosyu = Integer.parseInt(mHosyukousuuTextView.getText().toString());
-                //mJisseki = Integer.parseInt(mJissekikousuuextView.getText().toString());
+                mHosyu = Integer.parseInt(mHosyukousuuTextView.getText().toString());
+                mJisseki = Integer.parseInt(mJissekikousuuextView.getText().toString());
                 mNaiyou = mNaiyouTextView.getText().toString();
 
                 Map<String, String> data = new HashMap<String, String>();

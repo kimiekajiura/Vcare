@@ -31,11 +31,13 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ChartMain extends AppCompatActivity {
 
@@ -45,6 +47,7 @@ public class ChartMain extends AppCompatActivity {
     private FragmentManager flagmentManager;
 
     DatabaseReference mDatabaseReference;
+    private DatabaseReference mNippouRef;
 
     private int mCyear;
     private int mCmonth;
@@ -53,12 +56,15 @@ public class ChartMain extends AppCompatActivity {
     private int mCminute;
 
     private String mId;
-    private int mLabel;
+    private String mLabels;
     private String mLdate;
 
-    private int mlabel;
-
-    private int mHosyukousuu;
+    private int mlabel,mHosyu;
+    private String mHosyukousuu,mCustomer;
+    private String mPath,mYear,mMonth;
+    private int mDate;
+    private int mCYear, mCMonth, mCDay, mCHour, mCMinute;
+    private int mThosyu = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +73,143 @@ public class ChartMain extends AppCompatActivity {
 
         chart = (BarChart) findViewById(R.id.bar_chart);
         mCreateButton = (Button) findViewById(R.id.createbutton);
+
+
+        Bundle extras = getIntent().getExtras();
+        mId = extras.getString("mId");
+
+        Calendar cal = Calendar.getInstance();
+
+        mCYear =cal.get(Calendar.YEAR);
+        mCMonth =cal.get(Calendar.MONTH) + 1;
+        mCDay =cal.get(Calendar.DATE);
+        mCHour =cal.get(Calendar.HOUR);
+        mCMinute = cal.get(Calendar.MINUTE);
+
+        //工数ゲット
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference();
+                            mNippouRef = mDatabaseReference.child(Const.NippouPath).child(mId);
+                            mNippouRef.addListenerForSingleValueEvent(
+                                    new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            HashMap<String,HashMap<String,String>> map = (HashMap) dataSnapshot.getValue();
+                                            if (map != null){
+                                                for (String year : map.keySet()){
+                                                    mYear = year;
+                                                    mNippouRef = mDatabaseReference.child(Const.NippouPath).child(mId).child(String.valueOf(mCYear));
+                                                    mNippouRef.addListenerForSingleValueEvent(
+                                                            new ValueEventListener() {
+                                                                @Override
+                                                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                                                    HashMap<String,HashMap<String,String>> map = (HashMap) dataSnapshot.getValue();
+                                                                    if (map != null){
+                                                                        for (String month :map.keySet()){
+                                                                            mMonth = month;
+                                                                            mNippouRef = mDatabaseReference.child(Const.NippouPath).child((mId)).child(String.valueOf(mCYear)).child(String.valueOf(mCMonth));
+                                                                            mNippouRef.addListenerForSingleValueEvent(
+                                                                                    new ValueEventListener() {
+                                                                                        @Override
+                                                                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                                                                            HashMap<String,HashMap<String,String>> map = (HashMap) dataSnapshot.getValue();
+
+                                                                                            if(map != null){
+                                                                                                for (String date : map.keySet()) {
+                                                                                                    mDate = Integer.parseInt(date);
+
+//                                                                                                    Calendar cal = Calendar.getInstance();
+//                                                                                                    mCYear =cal.get(Calendar.YEAR);
+//                                                                                                    mCMonth =cal.get(Calendar.MONTH) + 1;
+//                                                                                                    mCDay =cal.get(Calendar.DATE);
+//
+//                                                                                                    cal.set(Calendar.YEAR, mCYear);
+//                                                                                                    cal.set(Calendar.MONTH, mCMonth);
+//                                                                                                    int lastDayOfMonth = cal.getActualMaximum(Calendar.DATE);
+//                                                                                                    int[] kosuArray = new int[lastDayOfMonth + 1];
+//
+//                                                                                                    kosuArray[mDate] = kosuArray[mDate] + 10;
+//
+
+
+//                                                                                                    for (int i = 1;i < lastDayOfMonth;i++){
+//                                                                                                        kosuArray[i] = i;
+//                                                                                                        if (mDate == i){
+//                                                                                                            mHosyukousuu = map.get(mDate).get("Hosyukousuu");
+//                                                                                                        }
+//
+//                                                                                                    }
+
+                                                                                                    mNippouRef = mDatabaseReference.child(Const.NippouPath).child(mId).child(String.valueOf(mCYear)).child(String.valueOf(mCMonth)).child(String.valueOf(mDate));
+                                                                                                            mNippouRef.addChildEventListener(
+                                                                                                                    new ChildEventListener() {
+                                                                                                                        @Override
+                                                                                                                        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                                                                                                            HashMap map = (HashMap) dataSnapshot.getValue();
+                                                                                                                            mCustomer = (String) map.get("Customer");
+                                                                                                                            mHosyukousuu = (String) map.get("Hosyukousuu");
+                                                                                                                            mThosyu = Integer.parseInt(mHosyukousuu) + mThosyu;
+                                                                                                                            Log.d("vcare",String.valueOf(mDate));
+                                                                                                                            Log.d("vcare",String.valueOf(mThosyu));
+                                                                                                                        }
+
+                                                                                                                        @Override
+                                                                                                                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                                                                                                                        }
+
+                                                                                                                        @Override
+                                                                                                                        public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                                                                                                                        }
+
+                                                                                                                        @Override
+                                                                                                                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                                                                                                                        }
+
+                                                                                                                        @Override
+                                                                                                                        public void onCancelled(DatabaseError databaseError) {
+
+                                                                                                                        }
+                                                                                                                    }
+
+                                                                                                            );
+                                                                                                }
+                                                                                            }
+
+
+                                                                                        }
+
+                                                                                        @Override
+                                                                                        public void onCancelled(DatabaseError databaseError) {
+
+                                                                                        }
+                                                                                    }
+                                                                            );
+                                                                        }
+                                                                    }
+
+                                                                }
+
+                                                                @Override
+                                                                public void onCancelled(DatabaseError databaseError) {
+
+                                                                }
+                                                            }
+                                                    );
+                                                }
+                                            }
+
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    }
+                            );
+
+
 
         mCreateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,8 +221,6 @@ public class ChartMain extends AppCompatActivity {
             }
         });
 
-        Bundle extras = getIntent().getExtras();
-        mId = extras.getString("mId");
 
         //表示データ取得
         BarData data = new BarData(getBarData());
@@ -106,35 +247,24 @@ public class ChartMain extends AppCompatActivity {
         right.setDrawZeroLine(true);
         right.setDrawTopYLabelEntry(true);
 
-
-
-        Calendar cal = Calendar.getInstance();
-
-        mCyear =cal.get(Calendar.YEAR);
-        mCmonth =cal.get(Calendar.MONTH) + 1;
-        mCdate =cal.get(Calendar.DATE);
-        mChour =cal.get(Calendar.HOUR);
-        mCminute = cal.get(Calendar.MINUTE);
-
         cal.set(Calendar.YEAR, mCyear);
         cal.set(Calendar.MONTH, mCmonth);
         int lastDayOfMonth = cal.getActualMaximum(Calendar.DATE);
 
-        //for(int i = 1; i <= lastDayOfMonth; i++) {
-        //    mlabel[i - 1] = i ;
+        String[] mLabels = new String[lastDayOfMonth + 1];
+        mLabels[0]= "";
+        XAxis xAxis = chart.getXAxis();
 
-            //X軸
-            XAxis xAxis = chart.getXAxis();
-            //X軸に表示するLabelのリスト(最初の""は原点の位置)
-            final String[] labels = {"","18/8/1", "18/8/2", "18/8/3","18/8/4", "18/8/5", "18/8/6","18/8/7", "18/8/8", "18/8/9","18/8/10", "18/8/11", "18/8/12","18/8/13", "18/8/14", "18/8/15","18/8/16", "18/8/17", "18/8/18","18/8/19","18/8/20", "18/8/21", "18/8/22","18/8/23", "18/8/24", "18/8/25","18/8/26", "18/8/27", "18/8/28","18/8/29", "18/8/30", "18/8/31"};
-            //final String[] labels = {"", String.valueOf(mLabel)};
-            xAxis.setValueFormatter(new IndexAxisValueFormatter(labels));
+        for(int i = 1; i <= lastDayOfMonth; i++) {
+            mLabels[i] = String.valueOf(i + "日");
+        }
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(mLabels));
             XAxis bottomAxis = chart.getXAxis();
             bottomAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
             bottomAxis.setDrawLabels(true);
             bottomAxis.setDrawGridLines(false);
             bottomAxis.setDrawAxisLine(true);
-        //}
+
 
 
 //        mHosyukousuu = 0;
