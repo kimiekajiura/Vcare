@@ -18,6 +18,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -155,39 +156,42 @@ public class TimeandAttendance extends AppCompatActivity
         tv.setText("現在      " + mYear + "/" + mMonth + "/" + mDate + "　　 " + mHour + "：" + mMinute);
 
         Bundle extras = getIntent().getExtras();
-        mId = extras.getString("id");
-        mPassword = extras.getString("password");
-        mName = extras.getString("name");
-        mGroup = extras.getString("group");
-        mAdminkengen = extras.getBoolean("adminkengen");
+        mId = extras.getString("mId");
+        mPassword = extras.getString("mPassword");
+        mName = extras.getString("mName");
+        mGroup = extras.getString("mGroup");
+        mAdminkengen = extras.getBoolean("mAdminkengen");
         mBikou = extras.getString("bikou");
 
         mBottomavigation  = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         BottomNavigationViewHelper.disableShiftMode(mBottomavigation );
 
         mDatabaseReference = FirebaseDatabase.getInstance().getReference();
-        mDatabaseReference.child(Const.UserPATH).child(mId).child(String.valueOf(mAdminkengen)).addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        Menu menu = mBottomavigation.getMenu();
-                        MenuItem menuItem = menu.findItem(R.id.createsyain);
-                        if (mAdminkengen == true){
-                            menuItem.setEnabled(true);
-                        }else {
-                            mBottomavigation.getMenu().removeItem(R.id.createsyain);
-                        }
+        if (mId != null){
+            mDatabaseReference.child(Const.UserPATH).child(mId).child(String.valueOf(mAdminkengen)).addListenerForSingleValueEvent(
+                    new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            Menu menu = mBottomavigation.getMenu();
+                            MenuItem menuItem = menu.findItem(R.id.createsyain);
+                            if (mAdminkengen == true){
+                                menuItem.setEnabled(true);
+                            }else {
+                                mBottomavigation.getMenu().removeItem(R.id.createsyain);
+                            }
 
 
                         }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
+                        }
                     }
-                }
 
-        );
+            );
+        }
+
 
         mBottomavigation .setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -200,6 +204,11 @@ public class TimeandAttendance extends AppCompatActivity
                     case R.id.dayreport:
                         Intent intent = new Intent(getApplicationContext(),ChartMain.class);
                         intent.putExtra("mId",mId);
+                        intent.putExtra("mPassword",mPassword);
+                        intent.putExtra("mName",mName);
+                        intent.putExtra("mGroup",mGroup);
+                        intent.putExtra("mAdminkengen",mAdminkengen);
+                        intent.putExtra("mBikou",mBikou);
 
                         startActivity(intent);
                         return true;
@@ -433,30 +442,6 @@ public class TimeandAttendance extends AppCompatActivity
             }
         });
 
-        /*
-        //備考入力画面
-        mBikouopenButton = (Button) findViewById(R.id.bikouopenbutton);
-        mBikouopenButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                flagmentManager = getFragmentManager();
-                //リスト選択でない場合は、本日を設定して開く
-                if (mLyear == 0 && mLmonth == 0 && mLdate == 0) {
-                    dialogFragment = new BikouEdit(mId,mYear,mMonth,mDate);
-                //リスト選択から開く
-                }else{
-                    dialogFragment = new BikouEdit(mId,mLyear,mLmonth,mLdate);
-                }
-                dialogFragment.show(flagmentManager,"test");
-            }
-
-        });
-        */
-
-        //mDatabaseReference = FirebaseDatabase.getInstance().getReference();
-        //mAttendanceRef = mDatabaseReference.child(Const.AttendancePATH).child(mId).child(String.valueOf(mYear)).child(String.valueOf(mMonth)).child(String.valueOf(mDate));
-        //mAttendanceRef.addChildEventListener(mSyukkinLietener);
-
         mAdapter = new AttendanceListAdapter(this);
         mListView = (ListView) findViewById(R.id.listView);
         mAttendanceArrayList= new ArrayList<Attendance>();
@@ -468,8 +453,6 @@ public class TimeandAttendance extends AppCompatActivity
                 mListView = (ListView) findViewById(R.id.listView);
                 flagmentManager = getFragmentManager();
                 dialogFragment = new BikouEdit();
-
-                //list.setSelector(new PaintDrawable(Color.LTGRAY));
 
                 mLid =mId;
                 mLyear =mAttendanceArrayList.get(position).getYear();
@@ -526,8 +509,6 @@ public class TimeandAttendance extends AppCompatActivity
                                     String bikou = (String) map.get("備考");
 
                                     Attendance attendance = new Attendance(mThisYear,mDiff,mDay,stime,etime,mId,bikou);
-
-
 
                                     mAttendanceArrayList.add(attendance);
                                     mAdapter.setAttendanceArrayList(mAttendanceArrayList);
@@ -1086,6 +1067,18 @@ public class TimeandAttendance extends AppCompatActivity
         }
 
     }
+//    public boolean onKeyDown(int keyCode,KeyEvent event){
+//        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+//        intent.putExtra("mId",mId);
+//        intent.putExtra("mPassword",mPassword);
+//        intent.putExtra("mName",mName);
+//        intent.putExtra("mGroup",mGroup);
+//        intent.putExtra("mAdminkengen",mAdminkengen);
+//        intent.putExtra("mBikou",mBikou);
+//        startActivity(intent);
+//        finish();
+//        return false;
+//    }
 
 
 /*

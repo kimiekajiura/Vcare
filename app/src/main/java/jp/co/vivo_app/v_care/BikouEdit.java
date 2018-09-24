@@ -388,19 +388,7 @@ public class BikouEdit extends DialogFragment {
                                                 }
                                             }
                                     );
-
-                                    android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(getActivity());
-                                    alertDialogBuilder.setTitle("登録しました。");
-                                    alertDialogBuilder.setPositiveButton("OK",
-                                            new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int which) {
-                                                    dismiss();
-                                                }
-                                            });
-                                    android.app.AlertDialog alertDialog = alertDialogBuilder.create();
-                                    alertDialog.show();
-                                    return;
+                                    dismiss();
                                 }else {
                                     android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(getActivity());
                                     alertDialogBuilder.setTitle("出退勤の登録はありません。");

@@ -1,5 +1,6 @@
 package jp.co.vivo_app.v_care;
 
+import android.content.Intent;
 import android.os.Bundle;
 //import android.support.v4.app.DialogFragment;
 import android.app.Dialog;
@@ -13,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -60,6 +62,13 @@ public class DairyReport extends AppCompatActivity {
     private Spinner mDayspinner;
     private Spinner mSyuukeibunrui;
     private Spinner mSagyoukubunn;
+
+    private String mId;
+    private String mPassword;
+    private String mName;
+    private String mGroup;
+    private boolean mAdminkengen;
+    private String mBikou;
 
     private Spinner mTorihikisaki;
     private Spinner mTorihikisakibusyo;
@@ -118,6 +127,7 @@ public class DairyReport extends AppCompatActivity {
     TextView mJissekikousuuextView;
     TextView mHosyukousuuTextView;
     TextView mNaiyouTextView;
+
 
     //社員
     ChildEventListener mUserListener = new ChildEventListener() {
@@ -362,6 +372,7 @@ public class DairyReport extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dairy_report);
 
+
         Calendar cal = Calendar.getInstance();
 
         mCyear =cal.get(Calendar.YEAR);
@@ -369,6 +380,15 @@ public class DairyReport extends AppCompatActivity {
         mCdate =cal.get(Calendar.DATE);
         mChour =cal.get(Calendar.HOUR);
         mCminute = cal.get(Calendar.MINUTE);
+
+        Bundle extras = getIntent().getExtras();
+        mId = extras.getString("mId");
+        mPassword = extras.getString("mPassword");
+        mName = extras.getString("mName");
+        mGroup = extras.getString("mGroup");
+        mAdminkengen = extras.getBoolean("mAdminkengen");
+        mBikou = extras.getString("mBikou");
+
 
 
 
@@ -781,6 +801,10 @@ public class DairyReport extends AppCompatActivity {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent();
+                                intent.putExtra("INPUT_STRING", mHosyukousuuTextView.toString());
+                                setResult(RESULT_OK, intent);
+
                             }
                         });
                 android.app.AlertDialog alertDialog = alertDialogBuilder.create();
@@ -791,7 +815,25 @@ public class DairyReport extends AppCompatActivity {
             }
         });
 
+
+
+
     }
+
+//    public boolean onKeyDown(int keyCode,KeyEvent event){
+//        Intent intent = new Intent(getApplicationContext(),ChartMain.class);
+//        mId = (String) mIdSpinner.getSelectedItem();
+//        intent.putExtra("mId",mId);
+//        intent.putExtra("mPassword",mPassword);
+//        intent.putExtra("mName",mName);
+//        intent.putExtra("mGroup",mGroup);
+//        intent.putExtra("mAdminkengen",mAdminkengen);
+//        intent.putExtra("mBikou",mBikou);
+//        startActivity(intent);
+//        finish();
+//        return false;
+//    }
+
 }
 
 

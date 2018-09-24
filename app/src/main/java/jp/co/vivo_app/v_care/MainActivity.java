@@ -1,5 +1,6 @@
 package jp.co.vivo_app.v_care;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -12,6 +13,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -151,13 +153,6 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
-
-
-
-
-
-
-
         //インスタンスをメンバ変数に保持
         mPasswordEditText = (EditText) findViewById(R.id.passwordedittext);
         mNameTextView = (TextView) findViewById(R.id.syainnametextview);
@@ -200,11 +195,11 @@ public class MainActivity extends AppCompatActivity{
                                         String pass = mPasswordEditText.getText().toString();
                                         if (Objects.equals(pass,password)){
                                             Intent intent = new Intent(getApplicationContext(),TimeandAttendance.class);
-                                            intent.putExtra("id",item);
-                                            intent.putExtra("password", password);
-                                            intent.putExtra("name", name);
-                                            intent.putExtra("group", group);
-                                            intent.putExtra("adminkengen", adminkengen);
+                                            intent.putExtra("mId",item);
+                                            intent.putExtra("mPassword", password);
+                                            intent.putExtra("mName", name);
+                                            intent.putExtra("mGroup", group);
+                                            intent.putExtra("mAdminkengen", adminkengen);
                                             startActivity(intent);
                                             return;
                                         }else{
@@ -241,5 +236,14 @@ public class MainActivity extends AppCompatActivity{
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
+//
+//    public boolean onKeyDown(int keyCode,KeyEvent event){
+//        finishAndRemoveTask();
+//        return false;
+//    }
+
+//    public void finishAndRemoveTask(){
+//        finish();
+//    }
 
 }

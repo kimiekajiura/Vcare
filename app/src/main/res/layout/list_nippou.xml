@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:id="@+id/nippou">
+
+        <TextView
+        android:layout_width="0dp"
+        android:layout_weight="1.5"
+        android:layout_height="20dp"
+        android:id="@+id/systemnametextview"
+        android:layout_marginRight="2dp"
+        android:background="@drawable/flame_style"
+        android:gravity="center"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1.5"
+            android:layout_height="20dp"
+            android:id="@+id/customernametextView"
+            android:layout_marginRight="2dp"
+            android:background="@drawable/flame_style"
+            android:gravity="center"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="20dp"
+            android:id="@+id/customerbusyotextView"
+            android:layout_marginRight="2dp"
+            android:background="@drawable/flame_style"
+            android:gravity="center"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1.5"
+            android:layout_height="20dp"
+            android:id="@+id/keikakutextView"
+            android:layout_marginRight="2dp"
+            android:background="@drawable/flame_style"
+            android:gravity="center"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="20dp"
+            android:id="@+id/bunruitextView"
+            android:layout_marginRight="2dp"
+            android:background="@drawable/flame_style"
+            android:gravity="center"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="20dp"
+            android:id="@+id/jissekikousuutextView"
+            android:layout_marginRight="2dp"
+            android:background="@drawable/flame_style"
+            android:gravity="center"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="20dp"
+            android:id="@+id/hosyukousuutextView"
+            android:background="@drawable/flame_style"
+            android:gravity="center"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="18dp"
+        android:id="@+id/naiyoutextview"
+        android:layout_marginRight="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/flame_style"
+        android:gravity="center"
+        android:layout_below="@+id/nippou"/>
+
+
+</RelativeLayout>

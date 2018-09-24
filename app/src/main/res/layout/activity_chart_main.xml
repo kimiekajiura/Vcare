@@ -7,26 +7,221 @@
     android:layout_height="wrap_content"
     tools:context=".ChartMain">
 
-    <Button
-        android:layout_alignParentEnd="true"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorPrimary"
-        android:id="@+id/createbutton"
-        android:text="新規登録"/>
+        android:layout_below="@+id/stbutton"
+        android:id="@+id/buttonlist">
 
+        <Button
+            android:layout_alignParentEnd="true"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:id="@+id/lastmonthbutton"
+            android:layout_below="@+id/stbutton"
+            android:textSize="13dp"
+            android:text="前月"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="35dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:gravity="center"
+            android:textSize="13dp"
+            android:background="@drawable/view_style"
+            android:id="@+id/thismonthtextview"/>
+
+        <Button
+            android:layout_alignParentEnd="true"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:id="@+id/nextmonthbutton"
+            android:layout_below="@+id/stbutton"
+            android:textSize="13dp"
+            android:text="次月"/>
+
+        <Button
+            android:layout_alignParentEnd="true"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:id="@+id/createbutton"
+            android:text="新規登録"
+            android:textSize="13dp"
+            android:layout_below="@+id/buttonlist"/>
+
+    </LinearLayout>
 
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/bar_chart"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_below="@+id/createbutton"/>
+        android:layout_height="150dp"
+        android:layout_below="@+id/buttonlist"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bar_chart"
+        android:id="@+id/datechoice">
+
+        <Spinner
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="35dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:gravity="center"
+            android:textSize="13dp"
+            android:id="@+id/thisdatespinner"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="35dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:gravity="center"
+            android:textSize="13dp"
+            android:id="@+id/hilabel"
+            android:text="日"/>
+
+        <Button
+            android:layout_alignParentEnd="true"
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:id="@+id/datechoicebutton"
+            android:layout_below="@+id/stbutton"
+            android:text="詳細表示"
+            android:textSize="13dp"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:id="@+id/nippou"
+        android:layout_below="@+id/datechoice">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1.5"
+            android:layout_height="wrap_content"
+            android:id="@+id/systemnametextview"
+            android:layout_marginRight="2dp"
+            android:background="@drawable/label_flame_style"
+            android:gravity="center"
+            android:text="システム名"
+            android:textColor="#ffff"
+            android:textSize="9dp"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1.5"
+            android:layout_height="wrap_content"
+            android:id="@+id/customernametextView"
+            android:layout_marginRight="2dp"
+            android:background="@drawable/label_flame_style"
+            android:gravity="center"
+            android:text="取引先名"
+            android:textColor="#ffff"
+            android:textSize="9dp"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:id="@+id/customerbusyotextView"
+            android:layout_marginRight="2dp"
+            android:background="@drawable/label_flame_style"
+            android:gravity="center"
+            android:text="部署名"
+            android:textColor="#ffff"
+            android:textSize="9dp"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1.5"
+            android:layout_height="wrap_content"
+            android:id="@+id/keikakutextView"
+            android:layout_marginRight="2dp"
+            android:background="@drawable/label_flame_style"
+            android:gravity="center"
+            android:text="計画名"
+            android:textColor="#ffff"
+            android:textSize="9dp"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:id="@+id/sagyoudatetextView"
+            android:layout_marginRight="2dp"
+            android:background="@drawable/label_flame_style"
+            android:gravity="center"
+            android:text="作業日"
+            android:textColor="#ffff"
+            android:textSize="9dp"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:id="@+id/bunruitextView"
+            android:layout_marginRight="2dp"
+            android:background="@drawable/label_flame_style"
+            android:gravity="center"
+            android:text="分類"
+            android:textColor="#ffff"
+            android:textSize="9dp"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:id="@+id/jissekikousuutextView"
+            android:layout_marginRight="2dp"
+            android:background="@drawable/label_flame_style"
+            android:gravity="center"
+            android:text="実績工数"
+            android:textColor="#ffff"
+            android:textSize="9dp"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:id="@+id/hosyukousuutextView"
+            android:background="@drawable/label_flame_style"
+            android:gravity="center"
+            android:text="保守工数"
+            android:textColor="#ffff"
+            android:textSize="9dp"/>
+
+    </LinearLayout>
+
 
     <ListView
         android:id="@+id/listview"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_below="@+id/bar_chart"
+        android:layout_below="@+id/nippou"
+        android:layout_marginTop="2dp"
         android:layout_alignParentBottom="true">
     </ListView>
 
