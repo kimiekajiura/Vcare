@@ -121,10 +121,9 @@ public class TimeandAttendance extends AppCompatActivity
     private int mThisMonth;
     private int mDiff;
 
-    private String mLid;
-    private int mLyear;
-    private int mLmonth;
-    private int mLdate;
+    private String mLid,mLbikou;
+    private int mLyear,mLmonth,mLdate;
+
     private WebView webView;
 
     private NavigationView mNavigationView;
@@ -327,14 +326,15 @@ public class TimeandAttendance extends AppCompatActivity
                                                                             Map<String, String> data = new HashMap<>();
 
                                                                             String stime = (String) map.get("出勤時刻");
+                                                                            String bikou = (String) map.get("備考");
+                                                                            String bikoutouroku = (String) map.get("備考登録時間");
 
                                                                             (mTaikinTextView = (TextView) findViewById(R.id.taikinview)).setText(mYear + "/" + mMonth + "/" + mDate + "  " + mHour + ":" + mMinute);
 
                                                                             data.put("退勤時刻",String.valueOf(mHour) + ":" +String.valueOf(mMinute));
                                                                             data.put("出勤時刻",stime);
-                                                                            if (mBikou != null){
-                                                                                data.put("備考",String.valueOf(mBikou));
-                                                                            }
+                                                                            data.put("備考",bikou);
+                                                                            data.put("備考登録時間",bikoutouroku);
 
                                                                             mSyukkinCHRef.setValue(data);
                                                                             mAttendanceArrayList.clear();
@@ -458,6 +458,7 @@ public class TimeandAttendance extends AppCompatActivity
                 mLyear =mAttendanceArrayList.get(position).getYear();
                 mLmonth =mAttendanceArrayList.get(position).getMonth();
                 mLdate =mAttendanceArrayList.get(position).getDay();
+                mLbikou = mAttendanceArrayList.get(position).getBikou();
 
                 Bundle bundle = new Bundle();
 
@@ -465,6 +466,7 @@ public class TimeandAttendance extends AppCompatActivity
                 bundle.putInt("mLyear",mLyear);
                 bundle.putInt("mLmonth",mLmonth);
                 bundle.putInt("mLdate",mLdate);
+                bundle.putString("mLbikou",mLbikou);
 
                 dialogFragment.setArguments(bundle);
                 dialogFragment.show(flagmentManager,"test");

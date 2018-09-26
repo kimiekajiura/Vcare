@@ -4,93 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/choicespinner"
-        android:layout_marginTop="4dp">
-
-        <Spinner
-            android:id="@+id/yearspinner"
-            android:layout_marginLeft="2dp"
-            android:layout_width="0dp"
-            android:layout_weight="5"
-            android:layout_height="30dp"/>
-
-        <TextView
-            android:id="@+id/yeartextview"
-            android:layout_width="0dp"
-            android:layout_weight="0.5"
-            android:layout_height="30dp"
-            android:layout_marginRight="1dp"
-            android:layout_marginLeft="2dp"
-            android:gravity="center"
-            android:text="年" />
-
-        <Spinner
-            android:id="@+id/monthspinner"
-            android:layout_marginLeft="2dp"
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:layout_height="30dp"/>
-
-        <TextView
-            android:id="@+id/monthtextview"
-            android:layout_width="0dp"
-            android:layout_weight="0.5"
-            android:layout_height="30dp"
-            android:layout_marginRight="1dp"
-            android:layout_marginLeft="2dp"
-            android:gravity="center"
-            android:text="月" />
-
-        <Spinner
-            android:id="@+id/dayspinner"
-            android:layout_marginLeft="2dp"
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:layout_height="30dp"/>
-
-        <TextView
-            android:id="@+id/daytextview"
-            android:layout_width="0dp"
-            android:layout_weight="0.5"
-            android:layout_height="30dp"
-            android:layout_marginRight="1dp"
-            android:layout_marginLeft="2dp"
-            android:gravity="center"
-            android:text="日" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:id="@+id/syainchoicespinner"
-        android:layout_below="@+id/choicespinner">
-
-    <Spinner
-        android:id="@+id/syaincodespinner"
-        android:layout_marginLeft="2dp"
-        android:layout_width="0dp"
-        android:layout_weight="2"
-        android:layout_height="30dp"/>
-
-    <TextView
-        android:id="@+id/syainnametextview"
-        android:layout_width="0dp"
-        android:layout_weight="2"
-        android:layout_height="30dp"
-        android:layout_marginRight="1dp"
-        android:layout_marginLeft="2dp"
-        android:gravity="center"
-        android:background="@drawable/view_style"
-        android:text="社員名" />
-
-    </LinearLayout>
-
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -99,7 +12,6 @@
         android:layout_marginTop="5dp"
         android:layout_marginRight="4dp"
         android:layout_marginLeft="4dp"
-        android:layout_below="@+id/syainchoicespinner"
         android:text="備考入力"/>
 
     <EditText
@@ -121,8 +33,8 @@
         android:layout_marginTop="5dp"
         android:layout_marginRight="4dp"
         android:layout_marginLeft="4dp"
+        android:layout_marginBottom="200dp"
         android:textColor="@color/colorPrimary"
-        android:text="登録"
-        android:layout_marginBottom="200dp"/>
+        android:text="登録"/>
 
 </RelativeLayout>

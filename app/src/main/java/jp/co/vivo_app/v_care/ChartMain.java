@@ -231,7 +231,7 @@ public class ChartMain extends AppCompatActivity {
                                     for (String date : map.keySet()) {
                                         mDate = Integer.parseInt(date);
                                         mThosyu = 0;
-                                        mHosyukousuu = null;
+                                        mJissekikousuu = null;
 
 
                                         Calendar cal = Calendar.getInstance();
@@ -242,8 +242,8 @@ public class ChartMain extends AppCompatActivity {
                                         Map<String,Map<String, String>> oneDayDataMap = (Map<String,Map<String, String>>) map.get(date);
                                         for (String oneDayDataKey: oneDayDataMap.keySet()){
                                             Map<String, String> oneValueMap = (Map<String, String>) oneDayDataMap.get(oneDayDataKey);
-                                            mHosyukousuu = (String) oneValueMap.get("Hosyukousuu");
-                                            mThosyu = Integer.parseInt(mHosyukousuu) + mThosyu;
+                                            mJissekikousuu = (String) oneValueMap.get("Jissekikousuu");
+                                            mThosyu = Integer.parseInt(mJissekikousuu) + mThosyu;
                                             mKousuuArray[mDate] = mThosyu;
                                         }
 
@@ -328,8 +328,8 @@ public class ChartMain extends AppCompatActivity {
                                                                                 Map<String,Map<String, String>> oneDayDataMap = (Map<String,Map<String, String>>) map.get(date);
                                                                                 for (String oneDayDataKey: oneDayDataMap.keySet()){
                                                                                     Map<String, String> oneValueMap = (Map<String, String>) oneDayDataMap.get(oneDayDataKey);
-                                                                                    mHosyukousuu = (String) oneValueMap.get("Hosyukousuu");
-                                                                                    mThosyu = Integer.parseInt(mHosyukousuu) + mThosyu;
+                                                                                    mJissekikousuu = (String) oneValueMap.get("Jissekikousuu");
+                                                                                    mThosyu = Integer.parseInt(mJissekikousuu) + mThosyu;
                                                                                     mKousuuArray[mDate] = mThosyu;
                                                                                 }
 
@@ -528,7 +528,7 @@ public class ChartMain extends AppCompatActivity {
 
             chart.setScaleEnabled(false);
             //アニメーション
-            chart.animateY(2000, Easing.EasingOption.Linear);
+            chart.animateY(500, Easing.EasingOption.Linear);
 
         }
 

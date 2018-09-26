@@ -37,17 +37,9 @@ import java.util.Map;
 
 public class BikouEdit extends DialogFragment {
 
-    private int mYear;
-    private int mMonth;
-    private int mDate;
+    private int mYear ,mMonth,mDate;
 
     private int mDay;
-    private int mThisMonth;
-    private int mThisYear;
-
-    private int mLyear;
-    private int mLmonth;
-    private int mLdate;
 
     private int mCyear;
     private int mCmonth;
@@ -55,7 +47,7 @@ public class BikouEdit extends DialogFragment {
     private int mChour;
     private int mCminute;
 
-    private String mId;
+    private String mId,mBikou;
 
     private ArrayList<Attendance> mAttendanceArrayList;
     private AttendanceListAdapter mAdapter;
@@ -65,17 +57,10 @@ public class BikouEdit extends DialogFragment {
     private DatabaseReference mAttendanceRef;
 
     ArrayAdapter<String> adapter;
-    ArrayAdapter<String> yadapter;
-    ArrayAdapter<String> madapter;
-    ArrayAdapter<String> dadapter;
 
-    private Spinner mYearspinner;
-    private Spinner mMonthspinner;
-    private Spinner mDayspinner;
-    private Spinner mSyaincodespinner;
     private Spinner mIdSpinner;
 
-    private Button mTourokuButton;
+    private Button mTourokuButton,mDeleteButton;
 
     private TextView mBikouTextView;
 
@@ -83,6 +68,8 @@ public class BikouEdit extends DialogFragment {
     private ListView mListView;
 
     EditText bikouedittext;
+
+    private int mAEFlg;
 
 
     //社員spinnaer設定用
@@ -130,6 +117,8 @@ public class BikouEdit extends DialogFragment {
     @Override
     public Dialog onCreateDialog (Bundle savedInstanceState) {
 
+        View view = getActivity().getLayoutInflater().inflate(R.layout.bikou_edit, null);
+
         alert = new AlertDialog.Builder(getActivity());
         Bundle bundle = getArguments();
 
@@ -137,6 +126,10 @@ public class BikouEdit extends DialogFragment {
         mYear = bundle.getInt("mLyear");
         mMonth = bundle.getInt("mLmonth");
         mDate = bundle.getInt("mLdate");
+        mBikou = bundle.getString("mLbikou");
+
+        mBikouTextView = (EditText) view.findViewById(R.id.bikouedittext);
+        mTourokuButton = (Button) view.findViewById(R.id.exbutton);
 
         Calendar cal = Calendar.getInstance();
 
@@ -146,174 +139,13 @@ public class BikouEdit extends DialogFragment {
         mChour =cal.get(Calendar.HOUR);
         mCminute = cal.get(Calendar.MINUTE);
 
-        View view = getActivity().getLayoutInflater().inflate(R.layout.bikou_edit, null);
-
-        mSyaincodespinner = (Spinner) view.findViewById(R.id.syaincodespinner);
-        mYearspinner = (Spinner) view.findViewById(R.id.yearspinner);
-        mMonthspinner = (Spinner) view.findViewById(R.id.monthspinner);
-        mDayspinner = (Spinner) view.findViewById(R.id.dayspinner);
-
-        //年スピナー
-        yadapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item);
-        yadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        Spinner yspinner = (Spinner) view.findViewById(R.id.yearspinner);
-        yspinner.setAdapter(adapter);
-
-        //月スピナー
-        madapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item);
-        madapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        Spinner mspinner = (Spinner) view.findViewById(R.id.monthspinner);
-        mspinner.setAdapter(adapter);
-
-        dadapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item);
-        dadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        Spinner dspinner = (Spinner) view.findViewById(R.id.dayspinner);
-        dspinner.setAdapter(adapter);
-
-
-        //return;
-        for(int i = mYear - 1; i <= mYear; i++){
-            yadapter.add(String.valueOf(i));
-        }
-        for(int i = 1; i <= 12; i++){
-            madapter.add(String.valueOf(i));
+        if (mBikou != null){
+            mBikouTextView.setText(mBikou);
         }
 
-        for(int i = 1; i <= 31; i++){
-            dadapter.add(String.valueOf(i));
-        }
-
-        //アダプターをセットする
-        yspinner.setAdapter(yadapter);
-        mspinner.setAdapter(madapter);
-        dspinner.setAdapter(dadapter);
-
-        //スピナーの初期値を現在の日付にする
-        yspinner.setSelection(1);
-        mspinner.setSelection(mMonth-1);
-        dspinner.setSelection(mDate-1);
-
-        mSyainArrayList = new ArrayList<Syain>();
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference();
-
-        adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        Spinner spinner = (Spinner) view.findViewById(R.id.syaincodespinner);
-        spinner.setAdapter(adapter);
-
-        mUserRef = mDatabaseReference.child(Const.UserPATH);
-        mUserRef.addChildEventListener(mUserListener);
-        //return;
-
-        spinner.setPrompt("社員CODE");
-        TextView textView = (TextView) view.findViewById(R.id.syainnametextview);
-        textView.setText("");
-
-        /*
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mIdSpinner = (Spinner) view.findViewById(R.id.syaincodespinner);
-                String item = (String) mIdSpinner.getSelectedItem();
-
-                mDatabaseReference.child(Const.UserPATH).child(item).addListenerForSingleValueEvent(
-                        new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                HashMap map = (HashMap)dataSnapshot.getValue();
-
-                                boolean adminkengen = (boolean) map.get("adminkengen");
-                                String group = (String) map.get("group");
-                                String name = (String) map.get("name");
-                                String password = (String) map.get("password");
-
-                                View view = getActivity().getLayoutInflater().inflate(R.layout.bikou_edit, null);
-                                TextView textView = view.findViewById(R.id.syainnametextview);
-                                textView.setText(name);
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        }
-                );
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-        */
-
-
-        /*
-
-        mSyainArrayList = new ArrayList<Syain>();
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference();
-
-        //社員スピナー
-        adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        Spinner spinner = (Spinner) view.findViewById(R.id.syaincodespinner);
-        spinner.setAdapter(adapter);
-        mUserRef = mDatabaseReference.child(Const.UserPATH);
-        mUserRef.addChildEventListener(mUserListener);
-
-
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mIdSpinner = (Spinner) view.findViewById(R.id.syaincodespinner);
-                String item = (String) mIdSpinner.getSelectedItem();
-
-                mDatabaseReference.child(Const.UserPATH).child(item).addListenerForSingleValueEvent(
-                        new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                View view = getActivity().getLayoutInflater().inflate(R.layout.bikou_edit, null);
-                                HashMap map = (HashMap)dataSnapshot.getValue();
-
-                                boolean adminkengen = (boolean) map.get("adminkengen");
-                                String group = (String) map.get("group");
-                                String name = (String) map.get("name");
-                                String password = (String) map.get("password");
-
-                                TextView textView = view.findViewById(R.id.syainnametextview);
-                                textView.setText(name);
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        }
-                );
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-        */
-
-
-
-        mBikouTextView = (EditText) view.findViewById(R.id.bikouedittext);
-        mTourokuButton = (Button) view.findViewById(R.id.exbutton);
         mTourokuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mId = (String) mSyaincodespinner.getSelectedItem();
-                mYear = Integer.parseInt(mYearspinner.getSelectedItem().toString());
-                mMonth = Integer.parseInt(mMonthspinner.getSelectedItem().toString());
-                mDate=Integer.parseInt(mDayspinner.getSelectedItem().toString());
-
-                //String bikou = mBikouTextView.getText().toString();
-
                 mDatabaseReference = FirebaseDatabase.getInstance().getReference();
                 mAttendanceRef = mDatabaseReference.child(Const.AttendancePATH).child(mId).child(String.valueOf(mYear)).child(String.valueOf(mMonth)).child(String.valueOf(mDate));
                 mAttendanceRef.addListenerForSingleValueEvent(
